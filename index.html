@@ -12,6 +12,9 @@
             margin: 0;
             display: flex;
             overflow: hidden;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
         canvas {
             position: fixed;
@@ -21,26 +24,14 @@
             height: 100%;
             z-index: -1;
         }
-        .sidebar {
-            width: 250px;
-            background: #1e1e1e;
-            height: 100vh;
-            padding: 20px;
-        }
-        .sidebar h2 {
-            color: #a970ff;
-        }
-        .content {
-            flex: 1;
-            padding: 20px;
-        }
-        .panel {
-            background: #222;
-            padding: 20px;
+        .payment-container {
+            background: rgba(30, 30, 30, 0.9);
+            padding: 40px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            box-shadow: 0px 0px 20px rgba(169, 112, 255, 0.8);
+            text-align: center;
         }
-        h3, label {
+        h2, h3, label {
             color: #a970ff;
             text-shadow: 0 0 10px #a970ff;
         }
@@ -53,11 +44,13 @@
             cursor: pointer;
             font-size: 16px;
             text-shadow: 0 0 10px #a970ff;
+            width: 100%;
+            margin-top: 10px;
         }
         button:hover {
             background: #8750d4;
         }
-        input, select {
+        input {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
@@ -65,33 +58,23 @@
             border-radius: 5px;
             background: #333;
             color: white;
-        }
-        .payment-buttons button {
-            margin: 10px 5px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <canvas id="starsCanvas"></canvas>
-    <div class="sidebar">
+    <div class="payment-container">
         <h2>Purchase MYS.CLIENT</h2>
-        <p>Secure Payments</p>
-    </div>
-    <div class="content">
-        <div class="panel">
-            <h3>Purchase MYS.CLIENT</h3>
-            <label>Product Name:</label>
-            <input type="text" value="MYS.CLIENT" readonly>
-            <label>Price ($):</label>
-            <input type="number" value="99.99" readonly>
-        </div>
-        <div class="panel payment-buttons">
-            <h3>Payment Methods</h3>
-            <button onclick="payWithCashApp()">Pay with CashApp</button>
-            <button onclick="payWithPayPal()">Pay with PayPal</button>
-            <button onclick="payWithVisa()">Pay with Visa</button>
-            <button onclick="payWithMasterCard()">Pay with MasterCard</button>
-        </div>
+        <h3>Secure Payment</h3>
+        <label>Product Name:</label>
+        <input type="text" value="MYS.CLIENT" readonly>
+        <label>Price ($):</label>
+        <input type="number" value="99.99" readonly>
+        <button onclick="payWithCashApp()">Pay with CashApp</button>
+        <button onclick="payWithPayPal()">Pay with PayPal</button>
+        <button onclick="payWithVisa()">Pay with Visa</button>
+        <button onclick="payWithMasterCard()">Pay with MasterCard</button>
     </div>
     <script>
         const canvas = document.getElementById("starsCanvas");
