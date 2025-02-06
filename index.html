@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchant Store</title>
+    <title>Purchase MYS.CLIENT</title>
     <style>
+        @keyframes fallingStars {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100vh; }
+        }
         body {
             font-family: Arial, sans-serif;
-            background-color: #121212;
+            background: black url('stars.png') repeat-y;
+            animation: fallingStars 10s linear infinite;
             color: white;
             margin: 0;
             display: flex;
@@ -31,6 +36,10 @@
             border-radius: 10px;
             margin-bottom: 20px;
         }
+        h3, label {
+            color: #a970ff;
+            text-shadow: 0 0 10px #a970ff;
+        }
         button {
             background: #a970ff;
             color: white;
@@ -39,6 +48,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            text-shadow: 0 0 10px #a970ff;
         }
         button:hover {
             background: #8750d4;
@@ -59,16 +69,16 @@
 </head>
 <body>
     <div class="sidebar">
-        <h2>Merchant Store</h2>
+        <h2>Purchase MYS.CLIENT</h2>
         <p>Secure Payments</p>
     </div>
     <div class="content">
         <div class="panel">
-            <h3>Purchase Item</h3>
+            <h3>Purchase MYS.CLIENT</h3>
             <label>Product Name:</label>
-            <input type="text" placeholder="Enter product name">
+            <input type="text" value="MYS.CLIENT" readonly>
             <label>Price ($):</label>
-            <input type="number" placeholder="Enter amount">
+            <input type="number" value="99.99" readonly>
         </div>
         <div class="panel payment-buttons">
             <h3>Payment Methods</h3>
