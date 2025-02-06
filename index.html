@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase Item</title>
+    <title>Website Creator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,55 +19,13 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             width: 400px;
-        }
-        h2 {
             text-align: center;
         }
-        .input-group {
-            margin-bottom: 15px;
+        h2 {
+            margin-bottom: 20px;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .payment-methods {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-        .payment-methods button {
-            flex: 1;
-            margin: 0 5px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .selected {
+        button {
             background: #6200ea;
-            color: white;
-        }
-        .card-icons {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: -30px;
-            margin-bottom: 10px;
-        }
-        .card-icons img {
-            height: 20px;
-            margin-left: 5px;
-        }
-        button.submit {
-            background: #28a745;
             color: white;
             padding: 12px;
             border: none;
@@ -76,48 +34,23 @@
             width: 100%;
             font-size: 16px;
         }
-        button.submit:hover {
-            background: #218838;
+        button:hover {
+            background: #4b00b5;
         }
     </style>
+    <script>
+        function createWebsite() {
+            const siteId = Math.random().toString(36).substr(2, 9);
+            const newSiteUrl = `https://example.com/site/${siteId}`;
+            window.location.href = newSiteUrl;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
-        <h2>Purchase Item</h2>
-        <div class="payment-methods">
-            <button class="selected">Pay by Card</button>
-            <button>Pay with PayPal</button>
-        </div>
-        <div class="input-group">
-            <label for="email">Email address</label>
-            <input type="email" id="email" placeholder="Enter email">
-        </div>
-        <div class="input-group">
-            <label for="card-number">Card Number</label>
-            <input type="text" id="card-number" placeholder="1234 1234 1234 1234">
-            <div class="card-icons">
-                <img src="visa.png" alt="Visa">
-                <img src="mastercard.png" alt="Mastercard">
-                <img src="amex.png" alt="Amex">
-            </div>
-        </div>
-        <div class="input-group">
-            <label for="expiry">Expiration Date</label>
-            <input type="text" id="expiry" placeholder="MM/YY">
-        </div>
-        <div class="input-group">
-            <label for="cvv">Security Code</label>
-            <input type="text" id="cvv" placeholder="CVC">
-        </div>
-        <div class="input-group">
-            <label for="name">Cardholder Name</label>
-            <input type="text" id="name" placeholder="Full Name">
-        </div>
-        <div class="input-group">
-            <label for="billing-address">Billing Address</label>
-            <input type="text" id="billing-address" placeholder="Address line 1">
-        </div>
-        <button class="submit">Submit Payment</button>
+        <h2>Create Your Website</h2>
+        <p>Click the button below to generate your own website instantly.</p>
+        <button onclick="createWebsite()">Create Website</button>
     </div>
 </body>
 </html>
