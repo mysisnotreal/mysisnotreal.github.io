@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Customization</title>
+    <title>Merchant Store</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,32 +52,45 @@
             background: #333;
             color: white;
         }
+        .payment-buttons button {
+            margin: 10px 5px;
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <h2>guns.lol</h2>
-        <p>Customize your website</p>
+        <h2>Merchant Store</h2>
+        <p>Secure Payments</p>
     </div>
     <div class="content">
         <div class="panel">
-            <h3>General Customization</h3>
-            <label>Description:</label>
-            <input type="text" placeholder="Enter description">
-            <label>Background Effect:</label>
-            <select>
-                <option>Night Time</option>
-                <option>Day Light</option>
-            </select>
+            <h3>Purchase Item</h3>
+            <label>Product Name:</label>
+            <input type="text" placeholder="Enter product name">
+            <label>Price ($):</label>
+            <input type="number" placeholder="Enter amount">
         </div>
-        <div class="panel">
-            <h3>Color Customization</h3>
-            <label>Accent Color:</label>
-            <input type="color">
-            <label>Text Color:</label>
-            <input type="color">
+        <div class="panel payment-buttons">
+            <h3>Payment Methods</h3>
+            <button onclick="payWithCashApp()">Pay with CashApp</button>
+            <button onclick="payWithPayPal()">Pay with PayPal</button>
+            <button onclick="payWithVisa()">Pay with Visa</button>
+            <button onclick="payWithMasterCard()">Pay with MasterCard</button>
         </div>
-        <button>Create Website</button>
     </div>
+    <script>
+        function payWithCashApp() {
+            alert('Redirecting to CashApp...');
+        }
+        function payWithPayPal() {
+            alert('Redirecting to PayPal...');
+        }
+        function payWithVisa() {
+            alert('Processing Visa payment...');
+        }
+        function payWithMasterCard() {
+            alert('Processing MasterCard payment...');
+        }
+    </script>
 </body>
 </html>
