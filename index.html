@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP Address Finder</title>
+    <title>IP Address in JSON Format</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,31 +25,40 @@
         h1 {
             color: #333;
         }
-        #ip-address {
-            font-size: 24px;
-            font-weight: bold;
-            color: #007BFF;
-        }
-        .loading {
-            color: #888;
+        pre {
+            font-size: 18px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Your IP Address</h1>
+    <h1>Your IP Address (JSON Format)</h1>
     <p class="loading">Loading...</p>
-    <p id="ip-address"></p>
+    <pre id="json-response"></pre>
 </div>
 
 <script>
-    // Function to fetch the IP address using a third-party API (ipify)
+    // Fetch IP address in JSON format from ipify API
     fetch('https://api.ipify.org?format=json')
-        .then(response => response.json())
+        .then(response => response.json()) // Parse JSON response
         .then(data => {
-            // Display the IP address
-            document.getElementById('ip-address').textContent = data.ip;
+            // Display the JSON response in the <pre> element
+            document.getElementById('json-response').textContent = JSON.stringify(data, null, 2);
             document.querySelector('.loading').style.display = 'none';
         })
-        .ca
+        .catch(error => {
+            // If there's an error, display an error message
+            document.getElementById('json-response').textContent = '{"error": "Unable to fetch IP address"}';
+            document.querySelector('.loading').style.display = 'none';
+        });
+</script>
+
+</body>
+</html>
