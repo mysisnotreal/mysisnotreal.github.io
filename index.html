@@ -4,61 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP Address in JSON Format</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
-        }
-        .container {
-            text-align: center;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        pre {
-            font-size: 18px;
-            background-color: #f0f0f0;
-            padding: 10px;
-            border-radius: 5px;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            font-family: monospace;
-        }
-    </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Your IP Address (JSON Format)</h1>
-    <p class="loading">Loading...</p>
+    <h1>Your IP Address</h1>
     <pre id="json-response"></pre>
-</div>
 
-<script>
-    // Fetch IP address in JSON format from ipify API
-    fetch('https://api.ipify.org?format=json')
-        .then(response => response.json()) // Parse JSON response
-        .then(data => {
-            // Display the JSON response in the <pre> element
-            document.getElementById('json-response').textContent = JSON.stringify(data, null, 2);
-            document.querySelector('.loading').style.display = 'none';
-        })
-        .catch(error => {
-            // If there's an error, display an error message
-            document.getElementById('json-response').textContent = '{"error": "Unable to fetch IP address"}';
-            document.querySelector('.loading').style.display = 'none';
-        });
-</script>
-
+    <script>
+        fetch('https://api.ipify.org/?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('json-response').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('json-response').textContent = '{"error": "Unable to fetch IP address"}';
+            });
+    </script>
 </body>
 </html>
