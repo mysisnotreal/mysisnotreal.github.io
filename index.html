@@ -3,123 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase MYS.CLIENT</title>
+    <title>IP Address Finder</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: black;
-            color: white;
             margin: 0;
+            padding: 0;
             display: flex;
-            overflow: hidden;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
+            background-color: #f4f4f9;
         }
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        .payment-container {
-            background: rgba(30, 30, 30, 0.9);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(169, 112, 255, 0.8);
+        .container {
             text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h2, h3, label {
-            color: #a970ff;
-            text-shadow: 0 0 10px #a970ff;
+        h1 {
+            color: #333;
         }
-        button {
-            background: #a970ff;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-shadow: 0 0 10px #a970ff;
-            width: 100%;
-            margin-top: 10px;
+        #ip-address {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007BFF;
         }
-        button:hover {
-            background: #8750d4;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            background: #333;
-            color: white;
-            text-align: center;
+        .loading {
+            color: #888;
         }
     </style>
 </head>
 <body>
-    <canvas id="starsCanvas"></canvas>
-    <div class="payment-container">
-        <h2>Purchase MYS.CLIENT</h2>
-        <h3>Secure Payment</h3>
-        <label>Product Name:</label>
-        <input type="text" value="MYS.CLIENT" readonly>
-        <label>Price ($):</label>
-        <input type="number" value="99.99" readonly>
-        <button onclick="payWithCashApp()">Pay with CashApp</button>
-        <button onclick="payWithPayPal()">Pay with PayPal</button>
-        <button onclick="payWithVisa()">Pay with Visa</button>
-        <button onclick="payWithMasterCard()">Pay with MasterCard</button>
-    </div>
-    <script>
-        const canvas = document.getElementById("starsCanvas");
-        const ctx = canvas.getContext("2d");
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener("resize", resizeCanvas);
+<div class="container">
+    <h1>Your IP Address</h1>
+    <p class="loading">Loading...</p>
+    <p id="ip-address"></p>
+</div>
 
-        const stars = Array.from({ length: 150 }, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            size: Math.random() * 2,
-            speed: Math.random() * 2 + 0.5
-        }));
-
-        function updateStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "white";
-            stars.forEach(star => {
-                star.y += star.speed;
-                if (star.y > canvas.height) star.y = 0;
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            requestAnimationFrame(updateStars);
-        }
-        updateStars();
-
-        function payWithCashApp() {
-            alert('Redirecting to CashApp...');
-        }
-        function payWithPayPal() {
-            alert('Redirecting to PayPal...');
-        }
-        function payWithVisa() {
-            alert('Processing Visa payment...');
-        }
-        function payWithMasterCard() {
-            alert('Processing MasterCard payment...');
-        }
-    </script>
-</body>
-</html>
+<script>
+    // Function to fetch the IP address using a third-party API (ipify)
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            // Display the IP address
+            document.getElementById('ip-address').textContent = data.ip;
+            document.querySelector('.loading').style.display = 'none';
+        })
+        .ca
