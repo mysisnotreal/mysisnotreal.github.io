@@ -3,21 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP Address in JSON Format</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        #json-response {
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+        }
+
+        button {
+            background-color: #444;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-    <h1>Your IP Address</h1>
+    <h1>Your IP Address in JSON Format</h1>
+    <button id="prettyPrintBtn">Pretty Print</button>
     <pre id="json-response"></pre>
 
     <script>
+        let isPrettyPrint = false;
+
         fetch('https://api.ipify.org/?format=json')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('json-response').textContent = JSON.stringify(data, null, 2);
+                displayJSON(data);
             })
             .catch(error => {
                 document.getElementById('json-response').textContent = '{"error": "Unable to fetch IP address"}';
             });
+
+        function displayJSON(data) {
+            if (isPrettyPrint) {
+                document.getElementById('json-response').textContent = JSON.stringify(data, null, 2);
+            } else {
+                document.getElementById('json-response').textContent = JSON.stringify(data);
+            }
+        }
+
+        document.getElementById('prettyPrintBtn').addEventListener('click', function() {
+            isPrettyPrint = !isPrettyPrint;
+            fetch('https://api.ipify.org/?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    displayJSON(data);
+                });
+        });
     </script>
 </body>
 </html>
