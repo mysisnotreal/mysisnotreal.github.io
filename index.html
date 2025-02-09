@@ -11,6 +11,7 @@
             margin: 0;
             overflow: hidden;
             background-color: black;
+            font-family: Arial, sans-serif;
         }
         .stars {
             position: fixed;
@@ -29,11 +30,41 @@
             background: rgba(20, 20, 20, 0.9);
             color: white;
             padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            cursor: pointer;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #333;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar ul li:hover {
+            background-color: #555;
         }
         .main-content {
             margin-left: 220px;
             padding: 20px;
             color: white;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .stat-box {
+            margin: 10px;
+            padding: 20px;
+            background: rgba(60, 60, 60, 0.8);
+            border-radius: 8px;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
         }
         .star {
             position: absolute;
@@ -52,6 +83,7 @@
             <li onclick="showPage('dashboard')">🏠 Dashboard</li>
             <li onclick="showPage('profile')">👤 Profile</li>
             <li onclick="showPage('settings')">⚙️ Settings</li>
+            <li onclick="showPage('about')">ℹ️ About</li>
         </ul>
     </div>
     <div class="main-content">
@@ -76,6 +108,10 @@
         <section id="settings" class="page">
             <h2>Settings</h2>
             <p>Settings options here...</p>
+        </section>
+        <section id="about" class="page">
+            <h2>About</h2>
+            <p>This is a simple dashboard clone with multiple pages using JavaScript.</p>
         </section>
     </div>
     <script>
@@ -124,6 +160,12 @@
                 star.y += (moveY - 2.5) * 0.1;
             });
         });
+
+        function showPage(page) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
+        }
 
         animateStars();
     </script>
