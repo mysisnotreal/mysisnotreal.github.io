@@ -3,31 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background-color: #121212;
-            color: white;
-            margin: 0;
-            padding: 20px;
-        }
-        
-        pre {
-            font-family: monospace;
-        }
-    </style>
+    <title>Dashboard Clone</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <pre id="json-response"></pre>
-
-    <script>
-        fetch('https://api.ipify.org/?format=json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('json-response').textContent = JSON.stringify(data, null, 2);
-            })
-            .catch(error => {
-                document.getElementById('json-response').textContent = '{"error": "Unable to fetch IP address"}';
-            });
-    </script>
+    <div class="sidebar">
+        <ul>
+            <li>🏠 Dashboard</li>
+            <li>👤 Profile</li>
+            <li>⚙️ Settings</li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Dashboard</h1>
+        </header>
+        <section class="stats">
+            <div class="stat-box">Total Accounts <span>0</span></div>
+            <div class="stat-box">Total Visits <span>3</span></div>
+            <div class="stat-box">Total URL Clicks <span>5</span></div>
+        </section>
+        <section class="overview">
+            <h2>Overview</h2>
+            <div class="graph">Graph Placeholder</div>
+        </section>
+        <section class="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul>
+                <li>🏆 EL - 21,299</li>
+                <li>Anonymous - 18,478</li>
+                <li>Gabriel - 17,612</li>
+            </ul>
+        </section>
+    </div>
 </body>
 </html>
