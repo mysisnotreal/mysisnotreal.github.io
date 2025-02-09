@@ -3,76 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Starfield</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: black;
-        }
-        .stars {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-    </style>
+    <title>Profile Customizer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
-<body>
-    <canvas class="stars"></canvas>
+<body class="bg-black text-white flex flex-col items-center p-6 min-h-screen">
+    <h1 class="text-2xl font-bold mb-4">Profile Customizer</h1>
+    <div class="w-full max-w-2xl p-6 bg-gray-900 rounded-2xl">
+        <div class="mb-4">
+            <label class="block text-sm mb-1">Description</label>
+            <input type="text" id="description" class="w-full p-2 bg-gray-800 text-white rounded" value="Love & Peace Forever">
+        </div>
 
-    <script>
-        const canvas = document.querySelector('.stars');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        <div class="mb-4">
+            <label class="block text-sm mb-1">Accent Color</label>
+            <input type="color" id="accentColor" class="w-full p-2 bg-gray-800 text-white rounded" value="#0d0d0d">
+        </div>
 
-        let stars = [];
-        for (let i = 0; i < 150; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 2 + 0.5,
-                offsetX: 0,
-                offsetY: 0
-            });
-        }
+        <div class="mb-4">
+            <label class="block text-sm mb-1">Text Color</label>
+            <input type="color" id="textColor" class="w-full p-2 bg-gray-800 text-white rounded" value="#ffffff">
+        </div>
 
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'white';
-            stars.forEach(star => {
-                ctx.beginPath();
-                ctx.arc(star.x + star.offsetX, star.y + star.offsetY, star.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-        }
+        <div class="mb-4">
+            <label class="block text-sm mb-1">Profile Opacity</label>
+            <input type="range" id="profileOpacity" class="w-full" min="20" max="100" step="10" value="80">
+        </div>
 
-        function animateStars() {
-            stars.forEach(star => {
-                star.offsetX += (Math.random() * 0.02 - 0.01); // Small random movement
-                star.offsetY += (Math.random() * 0.02 - 0.01); // Small random movement
-            });
-            drawStars();
-            requestAnimationFrame(animateStars);
-        }
+        <div class="mb-4">
+            <label class="block text-sm mb-1">Profile Blur</label>
+            <input type="range" id="profileBlur" class="w-full" min="0" max="80" step="10" value="20">
+        </div>
 
-        document.addEventListener('mousemove', (e) => {
-            const mouseX = e.clientX / canvas.width;
-            const mouseY = e.clientY / canvas.height;
-            
-            stars.forEach(star => {
-                const speedX = (mouseX - 0.5) * 5; // Responsive to mouse position
-                const speedY = (mouseY - 0.5) * 5;
-                star.offsetX += (speedX - star.offsetX) * 0.05; // Smooth transition
-                star.offsetY += (speedY - star.offsetY) * 0.05;
-            });
-        });
+        <div class="mb-4 flex items-center">
+            <label class="block text-sm mr-2">Socials Glow</label>
+            <input type="checkbox" id="socialsGlow" checked>
+        </div>
 
-        animateStars();
-    </script>
+        <button class="w-full p-3 bg-purple-600 hover:bg-purple-700 rounded text-white">
+            Save Customization
+        </button>
+    </div>
 </body>
 </html>
