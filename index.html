@@ -5,41 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Customizer</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script>
+        function saveProfile() {
+            const username = document.getElementById("username").value.trim();
+            if (!username) {
+                alert("Please enter a username.");
+                return;
+            }
+            localStorage.setItem(username, JSON.stringify({
+                description: document.getElementById("description").value,
+                accentColor: document.getElementById("accentColor").value,
+                textColor: document.getElementById("textColor").value,
+                profileOpacity: document.getElementById("profileOpacity").value,
+                profileBlur: document.getElementById("profileBlur").value,
+                socialsGlow: document.getElementById("socialsGlow").checked
+            }));
+            window.location.href = `/profile.html?user=${username}`;
+        }
+    </script>
 </head>
 <body class="bg-black text-white flex flex-col items-center p-6 min-h-screen">
     <h1 class="text-2xl font-bold mb-4">Profile Customizer</h1>
     <div class="w-full max-w-2xl p-6 bg-gray-900 rounded-2xl">
         <div class="mb-4">
+            <label class="block text-sm mb-1">Username</label>
+            <input type="text" id="username" class="w-full p-2 bg-gray-800 text-white rounded" placeholder="Enter your username">
+        </div>
+        <div class="mb-4">
             <label class="block text-sm mb-1">Description</label>
             <input type="text" id="description" class="w-full p-2 bg-gray-800 text-white rounded" value="Love & Peace Forever">
         </div>
-
         <div class="mb-4">
             <label class="block text-sm mb-1">Accent Color</label>
             <input type="color" id="accentColor" class="w-full p-2 bg-gray-800 text-white rounded" value="#0d0d0d">
         </div>
-
         <div class="mb-4">
             <label class="block text-sm mb-1">Text Color</label>
             <input type="color" id="textColor" class="w-full p-2 bg-gray-800 text-white rounded" value="#ffffff">
         </div>
-
         <div class="mb-4">
             <label class="block text-sm mb-1">Profile Opacity</label>
             <input type="range" id="profileOpacity" class="w-full" min="20" max="100" step="10" value="80">
         </div>
-
         <div class="mb-4">
             <label class="block text-sm mb-1">Profile Blur</label>
             <input type="range" id="profileBlur" class="w-full" min="0" max="80" step="10" value="20">
         </div>
-
         <div class="mb-4 flex items-center">
             <label class="block text-sm mr-2">Socials Glow</label>
             <input type="checkbox" id="socialsGlow" checked>
         </div>
-
-        <button class="w-full p-3 bg-purple-600 hover:bg-purple-700 rounded text-white">
+        <button onclick="saveProfile()" class="w-full p-3 bg-purple-600 hover:bg-purple-700 rounded text-white">
             Save Customization
         </button>
     </div>
