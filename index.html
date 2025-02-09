@@ -36,8 +36,8 @@
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 size: Math.random() * 2 + 0.5,
-                offsetX: Math.random() * 0.2 - 0.1, // Small horizontal offset
-                offsetY: Math.random() * 0.2 - 0.1  // Small vertical offset
+                offsetX: 0,
+                offsetY: 0
             });
         }
 
@@ -53,12 +53,24 @@
 
         function animateStars() {
             stars.forEach(star => {
-                star.offsetX += (Math.random() * 0.02 - 0.01); // Small random horizontal movement
-                star.offsetY += (Math.random() * 0.02 - 0.01); // Small random vertical movement
+                star.offsetX += (Math.random() * 0.02 - 0.01); // Small random movement
+                star.offsetY += (Math.random() * 0.02 - 0.01); // Small random movement
             });
             drawStars();
             requestAnimationFrame(animateStars);
         }
+
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / canvas.width;
+            const mouseY = e.clientY / canvas.height;
+            
+            stars.forEach(star => {
+                const speedX = (mouseX - 0.5) * 5; // Responsive to mouse position
+                const speedY = (mouseY - 0.5) * 5;
+                star.offsetX += (speedX - star.offsetX) * 0.05; // Smooth transition
+                star.offsetY += (speedY - star.offsetY) * 0.05;
+            });
+        });
 
         animateStars();
     </script>
