@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Clone</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             margin: 0;
@@ -20,6 +19,7 @@
             top: 0;
             left: 0;
             pointer-events: none;
+            z-index: 1;
         }
         .sidebar {
             position: fixed;
@@ -31,6 +31,7 @@
             color: white;
             padding: 20px;
             box-sizing: border-box;
+            z-index: 2;
         }
         .sidebar ul {
             list-style: none;
@@ -51,8 +52,7 @@
             margin-left: 220px;
             padding: 20px;
             color: white;
-            height: 100vh;
-            overflow-y: auto;
+            z-index: 2;
         }
         .stat-box {
             margin: 10px;
@@ -66,13 +66,17 @@
         .page.active {
             display: block;
         }
-        .star {
+        canvas {
             position: absolute;
-            background-color: purple;
-            width: 2px;
-            height: 2px;
-            border-radius: 50%;
-            opacity: 0.8;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        #myChart {
+            background-color: transparent;
+            border-radius: 10px;
+            z-index: 2;
         }
     </style>
 </head>
@@ -98,7 +102,7 @@
             </section>
             <section class="overview">
                 <h2>Overview</h2>
-                <div class="graph">Graph Placeholder</div>
+                <canvas id="myChart" width="400" height="200"></canvas>
             </section>
         </section>
         <section id="profile" class="page">
@@ -114,6 +118,7 @@
             <p>This is a simple dashboard clone with multiple pages using JavaScript.</p>
         </section>
     </div>
+
     <script>
         const canvas = document.querySelector('.stars');
         const ctx = canvas.getContext('2d');
@@ -166,6 +171,43 @@
             pages.forEach(p => p.classList.remove('active'));
             document.getElementById(page).classList.add('active');
         }
+
+        // Chart.js
+        const ctxChart = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctxChart, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Data',
+                    data: [12, 19, 3, 5, 2],
+                    borderColor: 'purple',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
         animateStars();
     </script>
