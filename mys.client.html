@@ -14,6 +14,32 @@
             font-family: sans-serif;
             background: #000;
             color: #fff;
+            position: relative;
+            min-height: 200vh; /* Make page longer */
+        }
+        #splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+        #splash.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #splash span {
+            font-size: 3em;
+            color: #f7cbf6;
+            text-align: center;
         }
         #nav {
             background: #000;
@@ -21,19 +47,19 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            padding: 10px;
+            padding: 15px;
             position: sticky;
             top: 0;
             z-index: 10;
         }
         #nav a {
-            color: #fff;
+            color: #f7cbf6;
             text-decoration: none;
-            font-size: 1.2em;
+            font-size: 1.3em;
         }
         #hero {
             position: relative;
-            height: 400px;
+            height: 600px; /* Taller video */
             overflow: hidden;
         }
         #bgVideo {
@@ -56,46 +82,73 @@
             z-index: 1;
         }
         #hero-text h1 {
-            font-size: 3em;
+            font-size: 4em;
             margin: 0;
+            color: #f7cbf6;
         }
         #hero-text p {
-            font-size: 1.5em;
-            margin: 10px 0 0;
+            font-size: 1.8em;
+            margin: 15px 0 0;
         }
         #script {
-            background: #ccc;
-            padding: 50px;
+            background: #000;
+            padding: 80px 20px;
             text-align: center;
-            color: #000;
+            color: #fff;
         }
         #script h2 {
-            font-size: 2.5em;
-            margin-bottom: 30px;
+            font-size: 3em;
+            margin-bottom: 40px;
+            color: #f7cbf6;
         }
         #buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
         }
         .button {
-            padding: 15px 30px;
-            background: #000;
-            color: #fff;
+            padding: 15px 40px;
+            background: #f7cbf6;
+            color: #000;
             text-decoration: none;
             border-radius: 5px;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #e5a4e3;
         }
         #watermark {
             text-align: center;
-            padding: 10px;
+            padding: 20px;
             background: #000;
-            color: #fff;
-            font-size: 0.9em;
+            color: #f7cbf6;
+            font-size: 1em;
+        }
+        #content {
+            padding: 50px 20px;
+            text-align: center;
+        }
+        #content p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
+    <div id="splash"><span>Welcome To The #1 Best Mic Up Script</span></div>
+    <canvas id="stars"></canvas>
     <div id="nav">
         <a href="#hero">Home</a>
         <a href="#script">Scripts</a>
@@ -119,6 +172,71 @@
             <a href="https://discord.gg/djMQRCNAAZ" target="_blank" class="button">Discord</a>
         </div>
     </div>
+    <div id="content">
+        <p>Explore the ultimate scripting experience with mys.client. Our scripts are designed to enhance your gameplay, providing seamless integration and top-tier performance. Join our community to stay updated with the latest features and exclusive content.</p>
+        <p>Whether you're a beginner or a seasoned player, mys.client offers tools and resources tailored to your needs. Dive into the world of Mic Up with confidence, knowing you have the best scripts at your fingertips.</p>
+    </div>
     <div id="watermark">© mys.client all rights reserved 2025</div>
+    <script>
+        // Splash screen fade
+        const splash = document.getElementById('splash');
+        setTimeout(() => {
+            splash.classList.add('hide');
+        }, 5000);
+        splash.addEventListener('click', () => {
+            splash.classList.add('hide');
+        });
+
+        // Falling stars animation
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const stars = [];
+        const numStars = 50;
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height;
+                this.speed = Math.random() * 2 + 1;
+                this.size = Math.random() * 2 + 1;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) {
+                    this.y = -this.size;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = '#f7cbf6';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        animate();
+    </script>
 </body>
 </html>
