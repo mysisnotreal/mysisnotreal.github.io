@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clean Animated Page with Three.js</title>
+    <title>Clean Animated Page</title>
     <style>
         * {
             margin: 0;
@@ -11,9 +11,9 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: -apple-system, Arial, sans-serif;
             color: #fff;
-            background: #000000;
+            background: #000;
             overflow-x: hidden;
         }
         #canvas {
@@ -28,23 +28,23 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            padding: 12px 20px;
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 30px;
             z-index: 10;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         .nav-bar a {
             color: #fff;
             text-decoration: none;
-            font-size: 1.2rem;
-            transition: color 0.3s;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
         .nav-bar a:hover {
-            color: #00ff88;
+            color: #FFB6C1; /* Milk pink */
         }
         .section {
             min-height: 100vh;
@@ -55,33 +55,39 @@
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
             width: 100%;
         }
         .square {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
             padding: 20px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             aspect-ratio: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transform: translateZ(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .square:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(255, 182, 193, 0.2); /* Milk pink glow */
         }
         h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
         p {
-            font-size: 1rem;
+            font-size: 0.9rem;
             opacity: 0;
+            color: #FFB6C1; /* Milk pink */
         }
     </style>
 </head>
@@ -96,20 +102,20 @@
     <div class="section" id="home">
         <div class="grid">
             <div class="square">
-                <h2>Feature 1</h2>
-                <p>Explore the first animated feature.</p>
+                <h2>Explore</h2>
+                <p>Discover the experience.</p>
             </div>
             <div class="square">
-                <h2>Feature 2</h2>
-                <p>Dynamic scrolling animations.</p>
+                <h2>Create</h2>
+                <p>Build something amazing.</p>
             </div>
             <div class="square">
-                <h2>Feature 3</h2>
-                <p>Frosted glass with depth.</p>
+                <h2>Connect</h2>
+                <p>Join the community.</p>
             </div>
             <div class="square">
-                <h2>Feature 4</h2>
-                <p>Immersive 3D experience.</p>
+                <h2>Inspire</h2>
+                <p>Share your vision.</p>
             </div>
         </div>
     </div>
@@ -117,59 +123,59 @@
         <div class="grid">
             <div class="square">
                 <h2>Script 1</h2>
-                <p>Discover scripting tools.</p>
+                <p>Code with power.</p>
             </div>
             <div class="square">
                 <h2>Script 2</h2>
-                <p>Automate with ease.</p>
+                <p>Automate tasks.</p>
             </div>
             <div class="square">
                 <h2>Script 3</h2>
-                <p>Powerful integrations.</p>
+                <p>Integrate tools.</p>
             </div>
             <div class="square">
                 <h2>Script 4</h2>
-                <p>Code the future.</p>
+                <p>Shape the future.</p>
             </div>
         </div>
     </div>
     <div class="section" id="discord">
         <div class="grid">
             <div class="square">
-                <h2>Community 1</h2>
-                <p>Join our Discord server.</p>
+                <h2>Chat</h2>
+                <p>Join our server.</p>
             </div>
             <div class="square">
-                <h2>Community 2</h2>
-                <p>Connect with others.</p>
+                <h2>Share</h2>
+                <p>Exchange ideas.</p>
             </div>
             <div class="square">
-                <h2>Community 3</h2>
-                <p>Share your ideas.</p>
-            </div>
-            <div class="square">
-                <h2>Community 4</h2>
+                <h2>Learn</h2>
                 <p>Grow together.</p>
+            </div>
+            <div class="square">
+                <h2>Collaborate</h2>
+                <p>Build as a team.</p>
             </div>
         </div>
     </div>
     <div class="section" id="coming-soon">
         <div class="grid">
             <div class="square">
-                <h2>Coming Soon 1</h2>
-                <p>Exciting features await.</p>
+                <h2>Feature 1</h2>
+                <p>Coming soon!</p>
             </div>
             <div class="square">
-                <h2>Coming Soon 2</h2>
-                <p>Stay tuned for updates.</p>
+                <h2>Feature 2</h2>
+                <p>Stay tuned.</p>
             </div>
             <div class="square">
-                <h2>Coming Soon 3</h2>
-                <p>New tools incoming.</p>
+                <h2>Feature 3</h2>
+                <p>New tools await.</p>
             </div>
             <div class="square">
-                <h2>Coming Soon 4</h2>
-                <p>The future is near.</p>
+                <h2>Feature 4</h2>
+                <p>Exciting updates.</p>
             </div>
         </div>
     </div>
@@ -186,27 +192,26 @@
         camera.position.z = 5;
 
         // Particle System (Starry Background)
-        const particleCount = 2000;
+        const particleCount = 1500;
         const particles = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount * 3; i++) {
-            positions[i] = (Math.random() - 0.5) * 20;
+            positions[i] = (Math.random() - 0.5) * 15;
         }
         particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         const particleMaterial = new THREE.PointsMaterial({
             color: 0xffffff,
-            size: 0.03,
+            size: 0.02,
             transparent: true,
-            opacity: 0.6
+            opacity: 0.5
         });
         const particleSystem = new THREE.Points(particles, particleMaterial);
         scene.add(particleSystem);
 
-        // Animation Loop (Spinning Stars)
+        // Animation Loop
         function animate() {
             requestAnimationFrame(animate);
-            particleSystem.rotation.y += 0.002;
-            particleSystem.rotation.x += 0.001;
+            particleSystem.rotation.y += 0.0015;
             renderer.render(scene, camera);
         }
         animate();
@@ -221,27 +226,56 @@
         // GSAP Scroll Animations
         gsap.registerPlugin(ScrollTrigger);
 
-        // Animate each section's squares
-        document.querySelectorAll('.section').forEach((section, index) => {
+        // Animate nav bar
+        gsap.from('.nav-bar', {
+            y: -100,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power3.out'
+        });
+
+        // Animate sections
+        document.querySelectorAll('.section').forEach(section => {
             const squares = section.querySelectorAll('.square');
-            squares.forEach((square, i) => {
-                gsap.fromTo(square, 
+            gsap.fromTo(squares, 
+                {
+                    y: 80,
+                    opacity: 0,
+                    scale: 0.9,
+                    filter: 'blur(6px)'
+                },
+                {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    filter: 'blur(0px)',
+                    duration: 0.8,
+                    ease: 'power3.out',
+                    stagger: 0.15,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 85%',
+                        end: 'top 20%',
+                        toggleActions: 'play none none reverse',
+                        scrub: 0.5
+                    }
+                }
+            );
+
+            // Text animation
+            squares.forEach(square => {
+                gsap.fromTo(square.querySelector('p'), 
                     {
-                        y: 100,
                         opacity: 0,
-                        scale: 0.8,
-                        rotation: 10,
-                        filter: 'blur(8px)'
+                        y: 20,
+                        filter: 'blur(4px)'
                     },
                     {
-                        y: 0,
                         opacity: 1,
-                        scale: 1,
-                        rotation: 0,
+                        y: 0,
                         filter: 'blur(0px)',
-                        duration: 1,
-                        ease: 'power3.out',
-                        delay: i * 0.2, // Staggered animation
+                        duration: 0.8,
+                        ease: 'power2.out',
                         scrollTrigger: {
                             trigger: section,
                             start: 'top 80%',
@@ -249,68 +283,19 @@
                         }
                     }
                 );
-
-                // Text animation inside squares
-                gsap.fromTo(square.querySelector('p'), 
-                    {
-                        opacity: 0,
-                        y: 20,
-                        filter: 'blur(5px)'
-                    },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        filter: 'blur(0px)',
-                        duration: 1.2,
-                        ease: 'power2.out',
-                        delay: i * 0.3,
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 70%',
-                            toggleActions: 'play none none reverse'
-                        }
-                    }
-                );
-
-                // Parallax effect
-                gsap.to(square, {
-                    y: -50 * (i + 1),
-                    scrollTrigger: {
-                        trigger: section,
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: true
-                    }
-                });
             });
-        });
 
-        // Frosted glass hover effect
-        document.querySelectorAll('.square').forEach(square => {
-            square.addEventListener('mouseenter', () => {
-                gsap.to(square, {
-                    scale: 1.1,
-                    backdropFilter: 'blur(15px)',
-                    boxShadow: '0 12px 48px rgba(0, 255, 136, 0.3)',
-                    duration: 0.4
-                });
+            // Parallax effect
+            gsap.to(squares, {
+                y: (i) => -30 * (i + 1),
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
             });
-            square.addEventListener('mouseleave', () => {
-                gsap.to(square, {
-                    scale: 1,
-                    backdropFilter: 'blur(10px)',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                    duration: 0.4
-                });
-            });
-        });
-
-        // Nav bar animation
-        gsap.from('.nav-bar', {
-            y: -50,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out'
         });
     </script>
 </body>
