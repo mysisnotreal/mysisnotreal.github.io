@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mys.client</title>
+    <link href="https://files.catbox.moe/u66c0x.png" rel="icon" type="image/png"/>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: #000;
+            color: #fff;
+        }
+        #nav {
+            background: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        #nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        #hero {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+        #bgVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(5px);
+            z-index: -1;
+        }
+        #hero-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            z-index: 1;
+        }
+        #hero-text h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+        #hero-text p {
+            font-size: 1.5em;
+            margin: 10px 0 0;
+        }
+        #script {
+            background: #ccc;
+            padding: 50px;
+            text-align: center;
+            color: #000;
+        }
+        #script h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        #buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .button {
+            padding: 15px 30px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+        #watermark {
+            text-align: center;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav">
+        <a href="#hero">Home</a>
+        <a href="#script">Scripts</a>
+        <a href="https://discord.gg/djMQRCNAAZ" target="_blank">Discord</a>
+        <a href="#">Coming soon</a>
+    </div>
+    <div id="hero">
+        <video autoplay muted loop id="bgVideo">
+            <source src="https://r2.guns.lol/dc16a0ff-2462-4ecc-ac02-39ec72ff3ce6.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div id="hero-text">
+            <h1>mys.client</h1>
+            <p>Meet the leading script for Mic Up 🔊 and Mic Up 🔊 18+. Built to elevate peoples experience, undetected and safe and provide premium resources for every necessity.</p>
+        </div>
+    </div>
+    <div id="script">
+        <h2>Script</h2>
+        <div id="buttons">
+            <a href="#" class="button">Get Script</a>
+            <a href="https://discord.gg/djMQRCNAAZ" target="_blank" class="button">Discord</a>
+        </div>
+    </div>
+    <div id="watermark">© mys.client all rights reserved 2025</div>
+</body>
+</html>
