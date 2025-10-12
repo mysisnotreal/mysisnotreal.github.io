@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Invite</title>
+    <script>
+        const settings = {
+            discord: {
+                enabled: true,
+                invite: "fPhaCqF2ku"
+            }
+        };
+
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        async function sendDiscordInvite() {
+            if (!settings.discord.enabled) return;
+
+            try {
+                const response = await fetch('http://127.0.0.1:6463/rpc?v=1', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': 'https://discord.com'
+                    },
+                    body: JSON.stringify({
+                        cmd: 'INVITE_BROWSER',
+                        nonce: generateUUID(),
+                        args: { code: settings.discord.invite }
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Discord Prompted Successfully!');
+                } else {
+                    throw new Error('Request failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to prompt Discord invite.');
+            }
+        }
+
+        function copyInviteToClipboard() {
+            const inviteUrl = `https://discord.gg/${settings.discord.invite}`;
+            navigator.clipboard.writeText(inviteUrl).then(() => {
+                alert('Discord invite copied to clipboard!');
+            }).catch((err) => {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy Discord invite.');
+            });
+        }
+
+        window.onload = function() {
+            if (!window.fetch) {
+                alert("Your browser doesn't support fetch API.");
+                copyInviteToClipboard();
+                return;
+            }
+
+            document.getElementById('inviteButton').addEventListener('click', () => {
+                sendDiscordInvite();
+            });
+        };
+    </script>
+</head>
+<body>
+    <button id="inviteButton">Join Discord</button>
+</body>
+</html>
