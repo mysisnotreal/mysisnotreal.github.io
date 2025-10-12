@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Virtual Computer — Sandbox</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --panel:#0b1220;
+      --accent:#7c3aed;
+      --glass: rgba(255,255,255,0.04);
+      --muted:#9aa4b2;
+      --text:#e6eef6;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%;}
+    body{margin:0;background:linear-gradient(180deg,#071127 0%,#0b1220 100%);color:var(--text);display:flex;align-items:center;justify-content:center;padding:24px}
+    .screen{width:1100px;height:680px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:12px;box-shadow:0 20px 50px rgba(2,6,23,0.7);overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.03)}
+
+    /* Top bar */
+    .menubar{height:48px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);display:flex;align-items:center;padding:0 12px;gap:12px;border-bottom:1px solid rgba(255,255,255,0.02)}
+    .start-btn{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+    .menubar .center{flex:1;text-align:center;color:var(--muted)}
+    .menubar .right{display:flex;gap:8px;align-items:center;color:var(--muted)}
+
+    .desktop{position:absolute;top:48px;bottom:0;left:0;right:0;padding:18px;display:flex}
+    .icons{width:220px;border-right:1px solid rgba(255,255,255,0.02);padding-right:12px;display:flex;flex-direction:column;gap:12px}
+    .icon{background:var(--glass);padding:10px;border-radius:8px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+    .icon:hover{transform:translateY(-4px)}
+    .icon .label{font-size:13px;color:var(--text)}
+
+    .workspace{flex:1;padding:12px;display:flex;flex-wrap:wrap;gap:12px;align-content:flex-start}
+
+    /* Window */
+    .window{width:520px;height:360px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:10px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 30px rgba(2,6,23,0.6);position:absolute;overflow:hidden}
+    .titlebar{height:40px;display:flex;align-items:center;gap:8px;padding:0 10px;border-bottom:1px solid rgba(255,255,255,0.02);background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .title{flex:1;font-weight:600}
+    .controls{display:flex;gap:6px}
+    .ctrl{width:14px;height:14px;border-radius:50%;opacity:0.9}
+    .ctrl.close{background:#ff5f56}
+    .ctrl.min{background:#ffbd2e}
+    .ctrl.max{background:#27c93f}
+    .win-body{padding:12px;height:calc(100% - 40px);overflow:auto}
+
+    /* Terminal styles */
+    .terminal{background:#061021;color:#8ae6ff;padding:12px;border-radius:6px;font-family:monospace;height:100%;display:flex;flex-direction:column}
+    .term-output{flex:1;overflow:auto;white-space:pre-wrap}
+    .term-input{display:flex;gap:8px;margin-top:8px}
+    .term-input input{flex:1;background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:6px;color:var(--text)}
+    .btn{background:var(--accent);border:none;padding:8px 10px;border-radius:6px;color:white;cursor:pointer}
+
+    /* File explorer */
+    .explorer-list{display:flex;flex-direction:column;gap:8px}
+    .file{background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
+
+    /* Small responsive */
+    @media (max-width:1200px){.screen{width:92%;height:72vh}}
+  </style>
+</head>
+<body>
+  <div class="screen" id="screen">
+    <div class="menubar">
+      <div class="start-btn" id="startBtn">Start</div>
+      <div class="center">Virtual Computer — Demo</div>
+      <div class="right"><div id="clock"></div></div>
+    </div>
+
+    <div class="desktop">
+      <div class="icons">
+        <div class="icon" data-app="terminal"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="white" stroke-opacity="0.9" stroke-width="1.2"/></svg><div class="label">Terminal</div></div>
+        <div class="icon" data-app="explorer"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 7h18v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="white" stroke-opacity="0.9" stroke-width="1.2"/></svg><div class="label">Files</div></div>
+        <div class="icon" data-app="notepad"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 3h10l4 4v14a1 1 0 0 1-1 1H5z" stroke="white" stroke-opacity="0.9" stroke-width="1.2"/></svg><div class="label">Notepad</div></div>
+        <div class="icon" data-app="calculator"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="white" stroke-opacity="0.9" stroke-width="1.2"/></svg><div class="label">Calculator</div></div>
+      </div>
+
+      <div class="workspace" id="workspace">
+        <!-- Windows will be added here -->
+      </div>
+    </div>
+  </div>
+
+  <template id="windowTpl">
+    <div class="window" draggable="false">
+      <div class="titlebar">
+        <div class="controls"><div class="ctrl close" title="Close"></div><div class="ctrl min" title="Minimize"></div><div class="ctrl max" title="Maximize"></div></div>
+        <div class="title">App</div>
+      </div>
+      <div class="win-body">App body</div>
+    </div>
+  </template>
+
+  <script>
+    // Small virtual computer behavior
+    const startBtn = document.getElementById('startBtn');
+    const workspace = document.getElementById('workspace');
+    const icons = document.querySelectorAll('.icon');
+    const tpl = document.getElementById('windowTpl');
+    const clock = document.getElementById('clock');
+
+    function updateClock(){
+      const d = new Date();
+      clock.textContent = d.toLocaleTimeString();
+    }
+    setInterval(updateClock,1000); updateClock();
+
+    // Simple window manager
+    let zIndexCounter = 2;
+    function createWindow({title='Window',contentNode=null,width=520,height=360,x=60,y=40}){
+      const win = tpl.content.firstElementChild.cloneNode(true);
+      win.style.width = width+'px';
+      win.style.height = height+'px';
+      win.style.left = x+'px';
+      win.style.top = y+'px';
+      win.style.zIndex = ++zIndexCounter;
+      win.querySelector('.title').textContent = title;
+      const body = win.querySelector('.win-body');
+      body.innerHTML = '';
+      if(contentNode) body.appendChild(contentNode);
+
+      // Controls
+      win.querySelector('.ctrl.close').addEventListener('click', ()=>win.remove());
+      win.querySelector('.ctrl.min').addEventListener('click', ()=>{win.style.display='none'});
+      win.querySelector('.ctrl.max').addEventListener('click', ()=>{win.style.width='100%';win.style.height='calc(100% - 48px)';win.style.left='0';win.style.top='48px'});
+
+      // Drag
+      const titlebar = win.querySelector('.titlebar');
+      let dragging=false, startX, startY, startLeft, startTop;
+      titlebar.addEventListener('pointerdown', e=>{
+        dragging=true; win.setPointerCapture(e.pointerId);
+        startX=e.clientX; startY=e.clientY; startLeft=parseInt(win.style.left); startTop=parseInt(win.style.top);
+        win.style.zIndex = ++zIndexCounter;
+      });
+      titlebar.addEventListener('pointerup', e=>{dragging=false; try{win.releasePointerCapture(e.pointerId)}catch{} });
+      titlebar.addEventListener('pointermove', e=>{if(!dragging) return; const dx=e.clientX-startX; const dy=e.clientY-startY; win.style.left = (startLeft+dx)+'px'; win.style.top = (startTop+dy)+'px'});
+
+      workspace.appendChild(win);
+      return win;
+    }
+
+    // Terminal implementation
+    function makeTerminal(){
+      const el = document.createElement('div');
+      el.className='terminal';
+      const out = document.createElement('div'); out.className='term-output'; out.textContent='Welcome to the Virtual Terminal\nType "help" for commands.';
+      const inputWrap = document.createElement('div'); inputWrap.className='term-input';
+      const inp = document.createElement('input'); inp.placeholder='> enter command...';
+      const runBtn = document.createElement('button'); runBtn.className='btn'; runBtn.textContent='Run';
+      inputWrap.appendChild(inp); inputWrap.appendChild(runBtn);
+      el.appendChild(out); el.appendChild(inputWrap);
+
+      function appendLine(txt){ out.textContent += '\n' + txt; out.scrollTop = out.scrollHeight }
+      function run(cmd){
+        cmd = cmd.trim(); if(!cmd) return;
+        appendLine('> ' + cmd);
+        const parts = cmd.split(' ');
+        const c = parts[0].toLowerCase();
+        if(c==='help') appendLine('Commands: help, echo, date, clear, ls, cat, open <file>, calc <expr>');
+        else if(c==='echo') appendLine(parts.slice(1).join(' '));
+        else if(c==='date') appendLine(new Date().toString());
+        else if(c==='clear'){ out.textContent = ''; }
+        else if(c==='ls'){ const keys = Object.keys(localStorage); appendLine(keys.join('  ')||'(no files)'); }
+        else if(c==='cat'){ const name = parts[1]; appendLine(localStorage.getItem(name) || '(file not found)'); }
+        else if(c==='open'){ const name = parts[1]; const content = localStorage.getItem(name)||''; openNotepad(name,content); appendLine('(opened '+name+')'); }
+        else if(c==='calc'){ try{ const expr = parts.slice(1).join(''); const val = eval(expr); appendLine(String(val)); }catch(e){ appendLine('calc error') } }
+        else appendLine('Unknown command: '+c);
+      }
+      runBtn.addEventListener('click', ()=>{ run(inp.value); inp.value=''; inp.focus(); });
+      inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ run(inp.value); inp.value=''; }});
+      return el;
+    }
+
+    // Notepad
+    function openNotepad(filename='untitled.txt',content=''){
+      const el = document.createElement('div');
+      el.style.display='flex'; el.style.flexDirection='column'; el.style.height='100%';
+      const toolbar = document.createElement('div'); toolbar.style.display='flex'; toolbar.style.gap='8px'; toolbar.style.marginBottom='8px';
+      const saveBtn = document.createElement('button'); saveBtn.className='btn'; saveBtn.textContent='Save';
+      const nameInput = document.createElement('input'); nameInput.value = filename; nameInput.style.padding='6px'; nameInput.style.borderRadius='6px'; nameInput.style.border='1px solid rgba(255,255,255,0.04)'; nameInput.style.background='transparent'; nameInput.style.color='var(--text)';
+      toolbar.appendChild(saveBtn); toolbar.appendChild(nameInput);
+      const ta = document.createElement('textarea'); ta.style.flex='1'; ta.style.width='100%'; ta.style.background='transparent'; ta.style.border='1px solid rgba(255,255,255,0.03)'; ta.style.padding='10px'; ta.style.borderRadius='6px'; ta.style.color='var(--text)'; ta.value = content;
+      el.appendChild(toolbar); el.appendChild(ta);
+      saveBtn.addEventListener('click', ()=>{ const name = nameInput.value || 'untitled.txt'; localStorage.setItem(name, ta.value); alert('Saved "'+name+'" to localStorage'); });
+      createWindow({title: 'Notepad — '+filename, contentNode: el, width:560,height:420,x:100,y:80});
+    }
+
+    // File explorer
+    function openExplorer(){
+      const el = document.createElement('div');
+      el.style.display='flex'; el.style.flexDirection='column'; el.style.height='100%';
+      const list = document.createElement('div'); list.className='explorer-list';
+      function refresh(){ list.innerHTML=''; for(let i=0;i<localStorage.length;i++){ const key = localStorage.key(i); const file = document.createElement('div'); file.className='file'; file.innerHTML = '<div>'+key+'</div><div><button data-open="'+key+'" class="btn">Open</button></div>'; list.appendChild(file); }
+        if(localStorage.length===0){ list.textContent = '(no files saved)'; }
+      }
+      refresh();
+      el.appendChild(list);
+      el.addEventListener('click', e=>{ if(e.target.matches('button[data-open]')){ const name = e.target.getAttribute('data-open'); openNotepad(name, localStorage.getItem(name)); }});
+      createWindow({title:'File Explorer', contentNode:el, width:440,height:380,x:140,y:120});
+    }
+
+    // Calculator
+    function openCalculator(){
+      const el = document.createElement('div'); el.style.display='flex'; el.style.flexDirection='column';
+      const out = document.createElement('div'); out.style.padding='12px'; out.style.fontSize='20px'; out.style.minHeight='60px'; out.style.border='1px solid rgba(255,255,255,0.03)'; out.style.borderRadius='6px'; out.textContent='0';
+      const keypad = document.createElement('div'); keypad.style.display='grid'; keypad.style.gridTemplateColumns='repeat(4,1fr)'; keypad.style.gap='8px'; keypad.style.marginTop='10px';
+      const keys = ['7','8','9','/','4','5','6','*','1','2','3','-','0','.','=','+'];
+      keys.forEach(k=>{ const b=document.createElement('button'); b.className='btn'; b.style.padding='12px'; b.textContent=k; b.addEventListener('click', ()=>{ if(k==='='){ try{ out.textContent = String(eval(out.textContent)); }catch{ out.textContent='Err' } } else if(k==='+'||k==='-'||k==='*'||k==='/'){ out.textContent += ' '+k+' '; } else { if(out.textContent==='0') out.textContent=k; else out.textContent += k; } }); keypad.appendChild(b); });
+      el.appendChild(out); el.appendChild(keypad);
+      createWindow({title:'Calculator', contentNode:el, width:360,height:360,x:200,y:160});
+    }
+
+    // Icon clicks
+    icons.forEach(ic=>ic.addEventListener('dblclick', ()=>{
+      const app = ic.getAttribute('data-app'); if(app==='terminal') createWindow({title:'Terminal', contentNode:makeTerminal()});
+      if(app==='explorer') openExplorer();
+      if(app==='notepad') openNotepad();
+      if(app==='calculator') openCalculator();
+    }));
+
+    // Start button opens a small menu
+    startBtn.addEventListener('click', ()=>{
+      const menu = document.createElement('div'); menu.style.position='absolute'; menu.style.left='12px'; menu.style.bottom='18px'; menu.style.background='rgba(2,6,23,0.8)'; menu.style.border='1px solid rgba(255,255,255,0.03)'; menu.style.padding='12px'; menu.style.borderRadius='8px'; menu.style.zIndex=9999;
+      menu.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px"><button id="mTerm" class="btn">Terminal</button><button id="mFiles" class="btn">Files</button><button id="mNotes" class="btn">Notepad</button></div>';
+      document.getElementById('screen').appendChild(menu);
+      function cleanup(){ menu.remove(); document.removeEventListener('click', ondoc); }
+      function ondoc(e){ if(!menu.contains(e.target) && e.target!==startBtn) cleanup(); }
+      document.addEventListener('click', ondoc);
+      menu.querySelector('#mTerm').addEventListener('click', ()=>{ createWindow({title:'Terminal', contentNode:makeTerminal()}); cleanup(); });
+      menu.querySelector('#mFiles').addEventListener('click', ()=>{ openExplorer(); cleanup(); });
+      menu.querySelector('#mNotes').addEventListener('click', ()=>{ openNotepad(); cleanup(); });
+    });
+
+    // Double-click desktop to create sample file
+    document.querySelector('.desktop').addEventListener('dblclick', ()=>{ localStorage.setItem('sample.txt', 'This is a sample file.\nYou can edit it in Notepad and save it.'); alert('sample.txt created in localStorage'); });
+
+    // Create a welcome terminal window by default
+    createWindow({title:'Terminal', contentNode:makeTerminal(), x:240,y:80});
+
+    // Helpful keyboard shortcuts
+    window.addEventListener('keydown', e=>{
+      if(e.ctrlKey && e.key==='n'){ openNotepad(); }
+      if(e.ctrlKey && e.key==='e'){ openExplorer(); }
+      if(e.ctrlKey && e.key==='t'){ createWindow({title:'Terminal', contentNode:makeTerminal(), x:260,y:120}); }
+    });
+
+  </script>
+</body>
+</html>
