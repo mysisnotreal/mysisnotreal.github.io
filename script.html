@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mys.client - Script</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #b0b0b0;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            position: relative;
+        }
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #d3d3d3;
+            padding: 8px 16px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .back-button:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        .liquid-glass {
+            background: linear-gradient(135deg, rgba(50, 50, 50, 0.2), rgba(80, 80, 80, 0.5));
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .liquid-glass:hover {
+            transform: scale(1.01);
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1400px;
+            gap: 40px;
+            z-index: 1;
+            margin-top: 80px;
+        }
+        .left-section {
+            flex: 1;
+            padding: 20px;
+            max-height: 300px;
+            animation: panelFadeIn 1s ease-out forwards;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .right-section {
+            flex: 1;
+            padding: 40px;
+            text-align: center;
+            animation: panelFadeIn 1s ease-out forwards;
+        }
+        h1 {
+            color: #e0e0e0;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .script-box {
+            background: linear-gradient(135deg, rgba(50, 50, 50, 0.2), rgba(80, 80, 80, 0.5));
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex: 1;
+            overflow: auto;
+        }
+        .script-box pre {
+            margin: 0;
+            font-size: 0.9em;
+            color: #c0c0c0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            flex: 1;
+        }
+        .copy-button {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #d3d3d3;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .copy-button:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        .copy-button.copied {
+            color: #00FF00;
+            border-color: #00FF00;
+        }
+        img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            animation: float 3s infinite ease-in-out;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.5em;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        @keyframes panelFadeIn {
+            0% {
+                transform: scale(0.8);
+                filter: blur(5px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                filter: blur(0);
+                opacity: 1;
+            }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">Back</a>
+    <div class="container">
+        <div class="left-section liquid-glass">
+            <h1>mys.client 2025 official script</h1>
+            <div class="script-box">
+                <pre>loadstring(game:HttpGet("http://utopia.voyage/m/mys.client"))()</pre>
+                <button class="copy-button" onclick="copyScript()">Copy</button>
+            </div>
+        </div>
+        <div class="right-section liquid-glass">
+            <img src="https://utopia.voyage/images/mysico.jpg" alt="mys.client">
+        </div>
+    </div>
+    <div class="watermark">mys.client</div>
+    <script>
+        function copyScript() {
+            const scriptText = `loadstring(game:HttpGet("http://utopia.voyage/m/mys.client"))()`;
+            navigator.clipboard.writeText(scriptText).then(() => {
+                const button = document.querySelector('.copy-button');
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
