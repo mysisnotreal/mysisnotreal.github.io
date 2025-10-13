@@ -17,6 +17,75 @@
             justify-content: flex-start;
             min-height: 100vh;
             position: relative;
+            overflow: hidden;
+        }
+        .background-circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.2) 0%, rgba(255, 182, 193, 0) 70%);
+            opacity: 0.3;
+            animation: pulse 8s ease-in-out infinite;
+        }
+        .circle:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .circle:nth-child(2) {
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: 60%;
+            animation-delay: 2s;
+        }
+        .circle:nth-child(3) {
+            width: 450px;
+            height: 450px;
+            bottom: 15%;
+            right: 15%;
+            animation-delay: 4s;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: fall 3s linear infinite;
+        }
+        .star:nth-child(1) { top: 5%; right: 10%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 15%; right: 20%; animation-delay: 0.5s; }
+        .star:nth-child(3) { top: 25%; right: 15%; animation-delay: 1s; }
+        .star:nth-child(4) { top: 10%; right: 25%; animation-delay: 1.5s; }
+        .star:nth-child(5) { top: 20%; right: 30%; animation-delay: 2s; }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+        }
+        @keyframes fall {
+            0% { transform: translate(0, 0); opacity: 0.5; }
+            100% { transform: translate(-500px, 500px); opacity: 0; }
         }
         #splash-screen {
             position: fixed;
@@ -215,10 +284,6 @@
             color: #FFB6C1;
             text-shadow: 0 0 5px rgba(255, 182, 193, 0.5);
         }
-        .vouch-bondzo h3 {
-            color: #800080;
-            text-shadow: 0 0 5px rgba(128, 0, 128, 0.5);
-        }
         @keyframes scroll-left {
             0% { transform: translateX(0); }
             100% { transform: translateX(calc(-1 * var(--scroll-width))); }
@@ -249,6 +314,18 @@
     </style>
 </head>
 <body>
+    <div class="background-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
     <div id="splash-screen">
         <h1>mys.client</h1>
     </div>
@@ -322,10 +399,6 @@
                 <div class="item liquid-glass vouch-gema">
                     <h3>@gema6681</h3>
                     <p>The best mic up script as of 2025</p>
-                </div>
-                <div class="item liquid-glass vouch-bondzo">
-                    <h3>𝕭𝖔𝖓𝖉𝖟𝖔</h3>
-                    <p>10/10 ive used it and been for a while love the script</p>
                 </div>
             </div>
         </div>
