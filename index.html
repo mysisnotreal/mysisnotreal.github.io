@@ -1,19 +1,354 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>403 Forbidden</title>
-  <style>
-    body {
-      background-color: black;
-      color: red;
-      text-align: center;
-      margin-top: 20%;
-      font-family: monospace;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mys.client</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #b0b0b0;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            position: relative;
+        }
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f0f0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1s ease-in-out forwards 2s;
+        }
+        #splash-screen h1 {
+            color: #ffffff;
+            font-size: 3em;
+            text-transform: uppercase;
+        }
+        .liquid-glass {
+            background: linear-gradient(135deg, rgba(50, 50, 50, 0.2), rgba(80, 80, 80, 0.5));
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .liquid-glass:hover {
+            transform: scale(1.01);
+        }
+        .item.liquid-glass:hover {
+            transform: none;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1400px;
+            gap: 40px;
+            z-index: 1;
+            margin-top: 100px;
+        }
+        .top-div {
+            position: absolute;
+            top: 20px;
+            width: 90%;
+            background: #1c1c1c;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            animation: slideDown 1s ease-out;
+            display: flex;
+            margin-top: 5px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .left-section {
+            flex: 1;
+            padding: 20px;
+            max-height: 300px;
+            margin-top: 80px;
+            overflow: auto;
+            animation: fadeInLeft 1s ease-out;
+        }
+        .right-section {
+            flex: 1;
+            padding: 40px;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeInRight 1s ease-out;
+        }
+        h1 {
+            color: #e0e0e0;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        h2 {
+            color: #e0e0e0;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #c0c0c0;
+        }
+        img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            animation: float 3s infinite ease-in-out;
+        }
+        .buttons {
+            margin-top: 25px;
+        }
+        button {
+            background-color: #2a2a2a;
+            color: #d3d3d3;
+            border: none;
+            padding: 12px 25px;
+            margin: 0 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #3d3d3d;
+            transform: translateY(-2px);
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.5em;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .carousel-container {
+            width: 90%;
+            max-width: 1400px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .marquee {
+            overflow: hidden;
+            white-space: nowrap;
+            height: 200px;
+            mask-image: linear-gradient(
+                to right,
+                transparent 0%,
+                black 10%,
+                black 90%,
+                transparent 100%
+            );
+            -webkit-mask-image: linear-gradient(
+                to right,
+                transparent 0%,
+                black 10%,
+                black 90%,
+                transparent 100%
+            );
+        }
+        .marquee-content {
+            display: inline-flex;
+            will-change: transform;
+        }
+        .top-marquee .marquee-content {
+            animation: scroll-right var(--animation-duration) linear infinite;
+        }
+        .bottom-marquee .marquee-content {
+            animation: scroll-left var(--animation-duration) linear infinite;
+        }
+        .item {
+            flex: 0 0 250px;
+            margin: 0 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .item h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .item p {
+            font-size: 1em;
+            color: #c0c0c0;
+        }
+        .vouch-hint h3 {
+            color: #8B0000;
+            text-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
+        }
+        .vouch-rexx h3 {
+            color: #FFA500;
+            text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+        }
+        .vouch-ofwl h3 {
+            color: #FFFFFF;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        .vouch-yoyo h3 {
+            color: #00FFFF;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        .vouch-gema h3 {
+            color: #FFB6C1;
+            text-shadow: 0 0 5px rgba(255, 182, 193, 0.5);
+        }
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-1 * var(--scroll-width))); }
+        }
+        @keyframes scroll-right {
+            0% { transform: translateX(calc(-1 * var(--scroll-width))); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeInLeft {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
 </head>
 <body>
-  <h1>403 - Forbidden</h1>
-  <p>You are not authorized to view this content.</p>
+    <div id="splash-screen">
+        <h1>mys.client</h1>
+    </div>
+    <div class="top-div liquid-glass">
+        <span>Welcome to mys.client - Elevate Your Experience</span>
+        <div class="nav-buttons">
+            <button>Home</button>
+            <button>Script</button>
+            <button>Discord</button>
+            <button>FAQ</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="left-section liquid-glass">
+            <h1>mys.client</h1>
+            <p>Meet the leading script for Mic Up 🔊 and Mic Up 🔊 18+. Built to elevate peoples experience, undetected and safe and provide premium resources for every necessity.</p>
+        </div>
+        <div class="right-section liquid-glass">
+            <img src="https://utopia.voyage/images/mysico.jpg" alt="mys.client">
+            <div class="buttons">
+                <a href="script"><button>Get Script</button></a>
+                <button>Discord</button>
+            </div>
+        </div>
+    </div>
+    <div class="carousel-container">
+        <h2>Features</h2>
+        <div class="marquee top-marquee">
+            <div class="marquee-content">
+                <div class="item liquid-glass">
+                    <h3>FE</h3>
+                    <p>Completely Destroy and ruin the experience of others!</p>
+                </div>
+                <div class="item liquid-glass">
+                    <h3>Http Blocker</h3>
+                    <p>Blocks any unwanted http requests such as loggers from other scripts!</p>
+                </div>
+                <div class="item liquid-glass">
+                    <h3>R15 Reanimation</h3>
+                    <p>Fully reanimate your roblox character to allow custom emotes.</p>
+                </div>
+                <div class="item liquid-glass">
+                    <h3>Maxwell</h3>
+                    <p>Shhh</p>
+                </div>
+                <div class="item liquid-glass">
+                    <h3>Custom Reanimation</h3>
+                    <p>Customize your reanimation types!</p>
+                </div>
+            </div>
+        </div>
+        <h2>💖 Vouches</h2>
+        <div class="marquee bottom-marquee">
+            <div class="marquee-content">
+                <div class="item liquid-glass vouch-hint">
+                    <h3>@hint</h3>
+                    <p>8/10 very fun and work on potassium</p>
+                </div>
+                <div class="item liquid-glass vouch-rexx">
+                    <h3>🎃rexx🎃</h3>
+                    <p>9/10</p>
+                </div>
+                <div class="item liquid-glass vouch-ofwl">
+                    <h3>OFW.L</h3>
+                    <p>Ay Much Repect Amazing Job With The Script Keep it up ❤️</p>
+                </div>
+                <div class="item liquid-glass vouch-yoyo">
+                    <h3>@YoyoYoyo-d8o</h3>
+                    <p>Yo just want to say w script it’s so good idc if it’s rated it’s so good w mans</p>
+                </div>
+                <div class="item liquid-glass vouch-gema">
+                    <h3>@gema6681</h3>
+                    <p>The best mic up script as of 2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="watermark">mys.client</div>
+    <script>
+        function setupCarousel(marqueeClass) {
+            const marquee = document.querySelector(marqueeClass);
+            const content = marquee.querySelector('.marquee-content');
+            const items = content.querySelectorAll('.item');
+            const itemCount = items.length;
+            if (itemCount === 0) return;
+
+            const itemWidth = items[0].offsetWidth + 20;
+            const totalWidth = itemWidth * itemCount;
+
+            marquee.style.setProperty('--scroll-width', `${totalWidth}px`);
+            marquee.style.setProperty('--animation-duration', `${totalWidth / 50}s`);
+
+            const cloneCount = Math.ceil(window.innerWidth / itemWidth) + 1;
+            for (let i = 0; i < cloneCount; i++) {
+                items.forEach(item => {
+                    const clone = item.cloneNode(true);
+                    content.appendChild(clone);
+                });
+            }
+        }
+
+        setupCarousel('.top-marquee');
+        setupCarousel('.bottom-marquee');
+    </script>
 </body>
 </html>
