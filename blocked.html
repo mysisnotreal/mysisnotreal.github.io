@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mys.client | mys.armor 🔒</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(30, 37, 41);
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .ascii-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(70, 87, 97, 0.5);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ascii-art {
+            font-size: 18px;
+            line-height: 1.2;
+            color: rgb(70, 87, 97);
+            text-shadow: 
+                0 0 5px rgba(70, 87, 97, 0.8),
+                0 0 10px rgba(70, 87, 97, 0.6),
+                0 0 15px rgba(70, 87, 97, 0.4),
+                0 0 20px rgba(70, 87, 97, 0.3),
+                0 0 30px rgba(70, 87, 97, 0.2);
+            animation: glow-pulse 2s ease-in-out infinite alternate;
+            white-space: pre;
+            font-weight: bold;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        @keyframes glow-pulse {
+            from {
+                text-shadow: 
+                    0 0 5px rgba(70, 87, 97, 0.8),
+                    0 0 10px rgba(70, 87, 97, 0.6),
+                    0 0 15px rgba(70, 87, 97, 0.4),
+                    0 0 20px rgba(70, 87, 97, 0.3),
+                    0 0 30px rgba(70, 87, 97, 0.2);
+            }
+            to {
+                text-shadow: 
+                    0 0 10px rgba(70, 87, 97, 1),
+                    0 0 20px rgba(70, 87, 97, 0.8),
+                    0 0 30px rgba(70, 87, 97, 0.6),
+                    0 0 40px rgba(70, 87, 97, 0.4),
+                    0 0 50px rgba(70, 87, 97, 0.3);
+            }
+        }
+
+        .protection-notice {
+            margin-top: 20px;
+            font-size: 14px;
+            color: rgba(70, 87, 97, 0.9);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(70, 87, 97, 0.5);
+        }
+
+        .lock-emoji {
+            font-size: 18px;
+            animation: lock-bounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes lock-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .hardcoded-ascii {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(70, 87, 97, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="ascii-container">
+        <div class="hardcoded-ascii">
+         .-""-.
+        / .--. \
+       / /    \ \
+       | |    | |
+       | |.-""-.|        Protected With mys.armor🔒
+      ///`.::::.`\
+     ||| ::/  \:: ;
+     ||; ::\__/:: ;
+      \\\ '::::' /
+       `=':-..-'`
+        </div>
+        
+        <div class="ascii-art">
+            prevented by mys.armor
+        </div>
+        
+        <div class="protection-notice">
+            <span class="lock-emoji">🔒</span> 
+            prevented by <strong>mys.armor</strong>
+            <span class="lock-emoji">🔒</span>
+        </div>
+    </div>
+</body>
+</html>
