@@ -3,432 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mys.client</title>
+    <title>Toffee.lol</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                Toffee: '#5C544E',
+              }
+            }
+          }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
+        * { cursor: none !important; }
         body {
-            background-color: #0f0f0f;
-            color: #b0b0b0;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: #09090b;
+            color: #fafafa;
+            overflow-x: hidden;
             margin: 0;
-            padding: 0;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeIn 0.4s ease-out forwards; }
+
+        /* Custom Cursor */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            z-index: 99999;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        .background-circles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 182, 193, 0.2) 0%, rgba(255, 182, 193, 0) 70%);
-            opacity: 0.3;
-            animation: pulse 8s ease-in-out infinite;
-        }
-        .circle:nth-child(1) {
-            width: 500px;
-            height: 500px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-        .circle:nth-child(2) {
-            width: 600px;
-            height: 600px;
-            top: 50%;
-            left: 60%;
-            animation-delay: 2s;
-        }
-        .circle:nth-child(3) {
-            width: 450px;
-            height: 450px;
-            bottom: 15%;
-            right: 15%;
-            animation-delay: 4s;
-        }
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            animation: fall 3s linear infinite;
-        }
-        .star:nth-child(1) { top: 5%; right: 10%; animation-delay: 0s; }
-        .star:nth-child(2) { top: 15%; right: 20%; animation-delay: 0.5s; }
-        .star:nth-child(3) { top: 25%; right: 15%; animation-delay: 1s; }
-        .star:nth-child(4) { top: 10%; right: 25%; animation-delay: 1.5s; }
-        .star:nth-child(5) { top: 20%; right: 30%; animation-delay: 2s; }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.1); opacity: 0.4; }
-        }
-        @keyframes fall {
-            0% { transform: translate(0, 0); opacity: 0.5; }
-            100% { transform: translate(-500px, 500px); opacity: 0; }
-        }
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0f0f0f;
-            display: flex;
             justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeOut 1s ease-in-out forwards 2s;
+            transform: translate(-50%, -50%);
         }
-        #splash-screen h1 {
-            color: #ffffff;
-            font-size: 3em;
-            text-transform: uppercase;
+        .cursor-plus {
+            position: relative;
+            width: 14px;
+            height: 14px;
         }
-        .liquid-glass {
-            background: linear-gradient(135deg, rgba(50, 50, 50, 0.2), rgba(80, 80, 80, 0.5));
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.3s ease;
-        }
-        .liquid-glass:hover {
-            transform: scale(1.01);
-        }
-        .item.liquid-glass:hover {
-            transform: none;
-        }
-        .container {
-            display: flex;
-            width: 90%;
-            max-width: 1400px;
-            gap: 40px;
-            z-index: 1;
-            margin-top: 100px;
-        }
-        .top-div {
+        .cursor-plus::before, .cursor-plus::after {
+            content: '';
             position: absolute;
-            top: 20px;
-            width: 90%;
-            background: #1c1c1c;
-            padding: 15px;
-            text-align: center;
-            border-radius: 10px;
-            animation: slideDown 1s ease-out;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background-color: #635444;
+            box-shadow: 0 0 8px #ffffff;
         }
-        .left-section {
-            flex: 1;
-            padding: 20px;
-            max-height: 300px;
-            margin-top: 80px;
-            overflow: auto;
-            animation: fadeInLeft 1s ease-out;
+        .cursor-plus::before {
+            width: 100%;
+            height: 2px;
+            top: 6px;
+            left: 0;
         }
-        .right-section {
-            flex: 1;
-            padding: 40px;
-            margin-top: 20px;
-            text-align: center;
-            animation: fadeInRight 1s ease-out;
+        .cursor-plus::after {
+            width: 2px;
+            height: 100%;
+            top: 0; left: 6px;
         }
-        h1 {
-            color: #e0e0e0;
-            font-size: 2.8em;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-        h2 {
-            color: #e0e0e0;
-            font-size: 2em;
-            margin-bottom: 10px;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-        p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            color: #c0c0c0;
-        }
-        img {
-            max-width: 70%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            animation: float 3s infinite ease-in-out;
-        }
-        .buttons {
-            margin-top: 25px;
-        }
-        button {
-            background-color: #2a2a2a;
-            color: #d3d3d3;
-            border: none;
-            padding: 12px 25px;
-            margin: 0 15px;
-            cursor: pointer;
-            font-size: 1.1em;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-        button:hover {
-            background-color: #3d3d3d;
-            transform: translateY(-2px);
-        }
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .watermark {
+
+        #vanta-bg {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 1.5em;
-            text-transform: uppercase;
-            pointer-events: none;
-            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
-        .carousel-container {
-            width: 90%;
-            max-width: 1400px;
-            margin-top: 40px;
-            margin-bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        
+        #root {
+            position: relative;
+            z-index: 10;
         }
-        .marquee {
-            overflow: hidden;
-            white-space: nowrap;
-            height: 200px;
-            mask-image: linear-gradient(
-                to right,
-                transparent 0%,
-                black 10%,
-                black 90%,
-                transparent 100%
-            );
-            -webkit-mask-image: linear-gradient(
-                to right,
-                transparent 0%,
-                black 10%,
-                black 90%,
-                transparent 100%
-            );
+
+        /* Custom Slider Style */
+        .custom-slider-container {
+            position: relative;
+            width: 100%;
+            height: 10px;
+            background-color: #1a1a1e;
+            border: 1px solid #27272a;
         }
-        .marquee-content {
-            display: inline-flex;
-            will-change: transform;
+        .custom-slider-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #5C544E;
+            transition: width 0.05s linear;
         }
-        .top-marquee .marquee-content {
-            animation: scroll-right var(--animation-duration) linear infinite;
-        }
-        .bottom-marquee .marquee-content {
-            animation: scroll-left var(--animation-duration) linear infinite;
-        }
-        .item {
-            flex: 0 0 250px;
-            margin: 0 10px;
-            padding: 20px;
-            text-align: center;
-        }
-        .item h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-        .item p {
-            font-size: 1em;
-            color: #c0c0c0;
-        }
-        .vouch-hint h3 {
-            color: #8B0000;
-            text-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
-        }
-        .vouch-rexx h3 {
-            color: #FFA500;
-            text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
-        }
-        .vouch-ofwl h3 {
-            color: #FFFFFF;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-        }
-        .vouch-yoyo h3 {
-            color: #00FFFF;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-        }
-        .vouch-gema h3 {
-            color: #FFB6C1;
-            text-shadow: 0 0 5px rgba(255, 182, 193, 0.5);
-        }
-        @keyframes scroll-left {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-1 * var(--scroll-width))); }
-        }
-        @keyframes scroll-right {
-            0% { transform: translateX(calc(-1 * var(--scroll-width))); }
-            100% { transform: translateX(0); }
-        }
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
-        }
-        @keyframes slideDown {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes fadeInLeft {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes fadeInRight {
-            from { transform: translateX(20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .custom-slider-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
         }
     </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react/": "https://esm.sh/react@^19.2.4/"
+  }
+}
+</script>
 </head>
 <body>
-    <div class="background-circles">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
+    <div id="vanta-bg"></div>
+    <div id="root"></div>
+    <div id="custom-cursor">
+        <div class="cursor-plus"></div>
     </div>
-    <div class="stars">
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-    </div>
-    <div id="splash-screen">
-        <h1>mys.client</h1>
-    </div>
-    <div class="top-div liquid-glass">
-        <span>Welcome to mys.client - Elevate Your Experience</span>
-        <div class="nav-buttons">
-            <button>Home</button>
-            <a href="script"><button>Script</button></a>
-            <a href="https://discord.gg/djMQRCNAAZ" target="_blank"><button>Discord</button></a>
-            <button>FAQ</button>
-        </div>
-    </div>
-    <div class="container">
-        <div class="left-section liquid-glass">
-            <h1>mys.client</h1>
-            <p>Meet the leading script for Mic Up 🔊 and Mic Up 🔊 18+. Built to elevate peoples experience, undetected and safe and provide premium resources for every necessity.</p>
-        </div>
-        <div class="right-section liquid-glass">
-            <img src="https://utopia.voyage/images/mysico.jpg" alt="mys.client">
-            <div class="buttons">
-                <a href="script"><button>Get Script</button></a>
-                <a href="https://discord.gg/djMQRCNAAZ" target="_blank"><button>Discord</button></a>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+                    // no view source \\
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+    if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') ||
+        (e.ctrlKey && e.key.toLowerCase() === 'u')
+    ) e.preventDefault();
+    });
+        
+        const { useState, useEffect, useRef } = React;
+
+        const DISCORD_LINK = "https://discord.gg/3M3q7Dbg3k";
+        const DOWNLOAD_LINK = "";
+        const PREVIEW_YOUTUBE_ID = "";
+        const Toffee_ICON_URL = "https://raw.githubusercontent.com/mysisnotreal/mysisnotreal.github.io/refs/heads/main/image-removebg-preview%20(16).png";
+
+        const BrowserTab = ({ id, label, icon, isActive, onClick }) => (
+            <button
+                onClick={() => onClick(id)}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 relative ${
+                    isActive 
+                    ? 'bg-[#18181b] text-Toffee rounded-t-lg border-x border-t border-zinc-800' 
+                    : 'text-zinc-500 hover:text-zinc-300'
+                }`}
+            >
+                <i className={`fa-solid ${icon} text-xs`}></i>
+                <span>{label}</span>
+                {isActive && <div className="absolute -bottom-px left-0 right-0 h-px bg-[#18181b] z-10" />}
+            </button>
+        );
+
+        const FeatureItem = ({ label, value }) => (
+            <div className="flex items-center justify-between py-2 border-b border-zinc-800/50 last:border-0 group">
+                <div className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-Toffee/40 group-hover:scale-125 transition-transform"></div>
+                    <span className="text-zinc-300 text-sm group-hover:text-white transition-colors">{label}</span>
+                </div>
+                {value && <span className="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800">{value}</span>}
             </div>
-        </div>
-    </div>
-    <div class="carousel-container">
-        <h2>Features</h2>
-        <div class="marquee top-marquee">
-            <div class="marquee-content">
-                <div class="item liquid-glass">
-                    <h3>FE</h3>
-                    <p>Completely Destroy and ruin the experience of others!</p>
+        );
+
+        const FeatureSlider = ({ label, value, min, max, step, onChange }) => {
+            const percentage = ((value - min) / (max - min)) * 100;
+            return (
+                <div className="py-3 border-b border-zinc-800/50 last:border-0 group select-none">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-zinc-300 text-sm group-hover:text-white transition-colors">{label}</span>
+                        <span className="text-xs font-mono text-zinc-400">{value.toFixed(1)}</span>
+                    </div>
+                    <div className="custom-slider-container">
+                        <div className="custom-slider-fill" style={{ width: `${percentage}%` }}></div>
+                        <input 
+                            type="range" 
+                            min={min} 
+                            max={max} 
+                            step={step} 
+                            value={value} 
+                            onChange={(e) => onChange(parseFloat(e.target.value))}
+                            className="custom-slider-input"
+                        />
+                    </div>
                 </div>
-                <div class="item liquid-glass">
-                    <h3>Http Blocker</h3>
-                    <p>Blocks any unwanted http requests such as loggers from other scripts!</p>
-                </div>
-                <div class="item liquid-glass">
-                    <h3>R15 Reanimation</h3>
-                    <p>Fully reanimate your roblox character to allow custom emotes.</p>
-                </div>
-                <div class="item liquid-glass">
-                    <h3>Maxwell</h3>
-                    <p>Shhh</p>
-                </div>
-                <div class="item liquid-glass">
-                    <h3>Custom Reanimation</h3>
-                    <p>Customize your reanimation types!</p>
-                </div>
+            );
+        };
+
+        const FeatureSection = ({ title, children }) => (
+            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-Toffee/10 transition-colors h-full">
+                <h3 className="text-Toffee/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <div className="w-4 h-px bg-Toffee/20"></div>
+                    {title}
+                </h3>
+                <div className="flex flex-col">{children}</div>
             </div>
-        </div>
-        <h2>💖 Vouches</h2>
-        <div class="marquee bottom-marquee">
-            <div class="marquee-content">
-                <div class="item liquid-glass vouch-hint">
-                    <h3>@hint</h3>
-                    <p>8/10 very fun and work on potassium</p>
-                </div>
-                <div class="item liquid-glass vouch-rexx">
-                    <h3>🎃rexx🎃</h3>
-                    <p>9/10</p>
-                </div>
-                <div class="item liquid-glass vouch-ofwl">
-                    <h3>OFW.L</h3>
-                    <p>Ay Much Repect Amazing Job With The Script Keep it up ❤️</p>
-                </div>
-                <div class="item liquid-glass vouch-yoyo">
-                    <h3>@YoyoYoyo-d8o</h3>
-                    <p>Yo just want to say w script it’s so good idc if it’s rated it’s so good w mans</p>
-                </div>
-                <div class="item liquid-glass vouch-gema">
-                    <h3>@gema6681</h3>
-                    <p>The best mic up script as of 2025</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="watermark">mys.client</div>
-    <script>
-        function setupCarousel(marqueeClass) {
-            const marquee = document.querySelector(marqueeClass);
-            const content = marquee.querySelector('.marquee-content');
-            const items = content.querySelectorAll('.item');
-            const itemCount = items.length;
-            if (itemCount === 0) return;
+        );
 
-            const itemWidth = items[0].offsetWidth + 20;
-            const totalWidth = itemWidth * itemCount;
+        const DownloadModal = ({ isOpen, onClose }) => {
+            const [progress, setProgress] = useState(0);
+            const [isFinished, setIsFinished] = useState(false);
 
-            marquee.style.setProperty('--scroll-width', `${totalWidth}px`);
-            marquee.style.setProperty('--animation-duration', `${totalWidth / 50}s`);
+            useEffect(() => {
+                if (isOpen) {
+                    setProgress(0);
+                    setIsFinished(false);
+                    const interval = setInterval(() => {
+                        setProgress((prev) => {
+                            if (prev >= 100) {
+                                clearInterval(interval);
+                                setIsFinished(true);
+                                return 100;
+                            }
+                            return prev + Math.floor(Math.random() * 5) + 2;
+                        });
+                    }, 100);
+                    return () => clearInterval(interval);
+                }
+            }, [isOpen]);
 
-            const cloneCount = Math.ceil(window.innerWidth / itemWidth) + 1;
-            for (let i = 0; i < cloneCount; i++) {
-                items.forEach(item => {
-                    const clone = item.cloneNode(true);
-                    content.appendChild(clone);
-                });
-            }
-        }
+            if (!isOpen) return null;
 
-        setupCarousel('.top-marquee');
-        setupCarousel('.bottom-marquee');
+            return (
+                <div 
+                    onClick={onClose}
+                    className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-in"
+                >
+                    <div 
+                        onClick={(e) => e.stopPropagation()}
+                        className="bg-[#0c0c0e] border border-zinc-800 w-full max-w-md rounded-2xl p-8 shadow-2xl relative"
+                    >
+                        {!isFinished && (
+                            <button onClick={onClose} className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+                        )}
+                        
+                        <div className="text-center space-y-6">
+                            <div className="w-20 h-20 bg-Toffee/10 rounded-full flex items-center justify-center mx-auto border border-Toffee/20 overflow-hidden p-3">
+                                <img src={Toffee_ICON_URL} alt="Toffee" className="w-full h-full object-contain" />
+                            </div>
+                            
+                            <div className="space-y-2">
+                                <h3 className="text-xl font-bold text-white">
+                                    {isFinished ? 'Link Ready' : 'Fetching newest download link'}
+                                </h3>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="w-full h-2 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
+                                    <div 
+                                        className="h-full bg-Toffee shadow-[0_0_15px_rgba(252,202,210,0.5)] transition-all duration-300 ease-out"
+                                        style={{ width: `${progress}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+
+                            {isFinished && (
+                                <div className="pt-4 animate-in">
+                                    <a 
+                                        href={DOWNLOAD_LINK} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="block w-full py-4 bg-Toffee text-[#09090b] font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-Toffee/20 text-center"
+                                    >
+                                        Continue
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('home');
+            const [activeFeatureCategory, setActiveFeatureCategory] = useState('Legit');
+            const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+
+            // Settings states
+            const [fovSize, setFovSize] = useState(90.0);
+            const [smoothing, setSmoothing] = useState(12.5);
+            const [predictionX, setPredictionX] = useState(0.12);
+            const [predictionY, setPredictionY] = useState(0.08);
+            const [walkSpeed, setWalkSpeed] = useState(16.0);
+            const [jumpPower, setJumpPower] = useState(50.0);
+            const [spinSpeed, setSpinSpeed] = useState(5.0);
+            const [orbitX, setOrbitX] = useState(1.0);
+            const [orbitY, setOrbitY] = useState(0.5);
+
+            const categoryIcons = { Legit: 'fa-user-shield', Rage: 'fa-skull', Visuals: 'fa-eye' };
+
+            useEffect(() => {
+                const cursor = document.getElementById('custom-cursor');
+                const moveCursor = (e) => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                };
+                window.addEventListener('mousemove', moveCursor);
+                return () => window.removeEventListener('mousemove', moveCursor);
+            }, []);
+
+            return (
+                <div className="min-h-screen relative flex flex-col">
+                    <DownloadModal isOpen={isDownloadModalOpen} onClose={() => setIsDownloadModalOpen(false)} />
+                    
+                    <main className="px-6 pt-16 pb-20 relative flex-1">
+                        <div className="w-full max-w-6xl mx-auto mt-8 mb-20 bg-[#09090b]/80 backdrop-blur-md rounded-xl border border-zinc-800 shadow-2xl overflow-hidden flex flex-col">
+                            {/* Browser Header */}
+                            <div className="bg-[#0c0c0e]/90 border-b border-zinc-800 px-4 pt-3 flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex gap-2 mr-4">
+                                        <div className="w-3 h-3 rounded-full bg-zinc-800" />
+                                        <div className="w-3 h-3 rounded-full bg-zinc-800" />
+                                        <div className="w-3 h-3 rounded-full bg-zinc-800" />
+                                    </div>
+                                    <div className="flex gap-1">
+                                        <BrowserTab id="home" label="Home" icon="fa-house" isActive={activeTab === 'home'} onClick={setActiveTab} />
+                                        <BrowserTab id="features" label="Features" icon="fa-bolt" isActive={activeTab === 'features'} onClick={setActiveTab} />
+                                    </div>
+                                </div>
+                                <div className="pb-3">
+                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-Toffee/10 hover:bg-Toffee/20 text-Toffee px-3 py-1.5 rounded-md text-xs font-semibold transition-colors border border-Toffee/20">
+                                        <i className="fa-brands fa-discord"></i>
+                                        <span>Join Community</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* URL Bar */}
+                            <div className="bg-[#18181b]/90 px-4 py-2 border-b border-zinc-800 flex items-center gap-3">
+                                <div className="flex gap-2 text-zinc-600 text-xs">
+                                    <i className="fa-solid fa-arrow-left cursor-pointer hover:text-zinc-400"></i>
+                                    <i className="fa-solid fa-arrow-right cursor-pointer hover:text-zinc-400"></i>
+                                    <i className="fa-solid fa-rotate-right cursor-pointer hover:text-zinc-400 ml-1"></i>
+                                </div>
+                                <div className="flex-1 bg-zinc-900/50 rounded-md py-1 px-3 text-xs text-zinc-500 font-mono flex items-center gap-2 border border-zinc-800">
+                                    <i className="fa-solid fa-lock text-[10px] text-Toffee"></i>
+                                    <span>Toffee.lol/{activeTab}</span>
+                                </div>
+                            </div>
+
+                            <div className="p-8 h-full min-h-[600px] bg-transparent relative">
+                                {activeTab === 'home' && (
+                                    <div className="space-y-12 pb-16 animate-in">
+                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                                            <div className="space-y-6">
+                                                <div className="flex items-start gap-4">
+                                                    <img src={Toffee_ICON_URL} alt="Toffee Icon" className="w-32 h-32 object-contain mt-1" />
+                                                    <h2 className="text-3xl font-bold text-white leading-tight">
+                                                        Toffee.lol <br/> 
+                                                        <span className="text-Toffee">Made By Cheaters For Cheaters.</span>
+                                                    </h2>
+                                                </div>
+                                                <p className="text-zinc-400 leading-relaxed">
+                                                    Toffee.lol works completely outside the game, using memory scanning and kernel-level monitoring to observe and interact without ever injecting into the game process. By remaining fully external, it avoids the usual detection paths that internal tools rely on, reducing exposure to common anti-cheat checks while keeping performance stable and behavior consistent.
+                                                </p>
+                                                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                                                    <button 
+                                                        onClick={() => setIsDownloadModalOpen(true)}
+                                                        className="px-8 py-3 bg-Toffee text-[#09090b] font-bold rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-Toffee/10 text-center"
+                                                    >
+                                                        Download
+                                                    </button>
+                                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-zinc-900/50 text-zinc-300 font-bold rounded-lg border border-zinc-800 hover:border-zinc-700 transition-colors text-center inline-block">Join Discord</a>
+                                                </div>
+                                            </div>
+                                            <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-zinc-800 shadow-2xl bg-zinc-900/40 group">
+                                                <iframe className="w-full h-full" src={`https://www.youtube.com/embed/${PREVIEW_YOUTUBE_ID}?autoplay=0&controls=1&rel=0`} frameBorder="0" allowFullScreen></iframe>
+                                            </div>
+                                        </div>
+
+                                        {/* Changelog Section */}
+                                        <div className="bg-[#0c0c0e]/60 border border-zinc-800/50 rounded-lg overflow-hidden flex flex-col">
+                                            <div className="px-5 py-3 border-b border-zinc-800/50 bg-zinc-900/20 flex items-center justify-between">
+                                                <div className="flex items-center gap-3">
+                                                    <i className="fa-solid fa-terminal text-Toffee text-xs"></i>
+                                                    <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-[0.2em]">Live Changelog</span>
+                                                </div>
+                                                <div className="flex gap-1.5"><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div></div>
+                                            </div>
+                                            <div className="p-6 space-y-3 font-mono">
+                                                <div className="space-y-2">
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">First Look / 1/27/2026</span>
+                                                    </div>
+                                                    {/*
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">released - 1/17/2026</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">Fog changer - Visuals -> Misc subtab</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">Visuals UI reorganization - Main/Info/Misc subtabs</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">Box fill gradients - 6 gradient directions with color customization</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">ESP customization - Box outline thickness, corner size, rounding, name font size, name background, tracer gradient</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">FOV shape styles - Circle, Square, Triangle, Pentagon, Hexagon, Octagon</span>
+                                                    </div>*/}
+                                                </div>
+                                                <div className="pt-4 border-t border-zinc-800/30">
+                                                    <span className="text-zinc-600 text-[10px] italic">End of logs... waiting for updates.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {activeTab === 'features' && (
+                                    <div className="flex flex-col h-full relative animate-in">
+                                        {/* Feature Categories Navigation */}
+                                        <div className="flex gap-2 mb-8 bg-zinc-900/50 p-1 rounded-xl border border-zinc-800 self-start backdrop-blur-sm">
+                                            {['Legit', 'Rage', 'Visuals'].map((cat) => (
+                                                <button key={cat} onClick={() => setActiveFeatureCategory(cat)} className={`px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2.5 ${activeFeatureCategory === cat ? 'bg-Toffee text-[#09090b] shadow-lg shadow-Toffee/10' : 'text-zinc-500 hover:text-zinc-300'}`}>
+                                                    <i className={`fa-solid ${categoryIcons[cat]} text-[10px]`}></i>
+                                                    {cat}
+                                                </button>
+                                            ))}
+                                        </div>
+
+                                        {/* Features Grid */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+                                            {activeFeatureCategory === 'Legit' && (
+                                                <>
+                                                    <FeatureSection title="Aimbot">
+                                                        <FeatureItem label="Aimbot" value="Toggle" />
+                                                        <FeatureItem label="Aim Mode" value="Mouse / Camera" />
+                                                        <FeatureItem label="Target Hitbox" value="Head / Torso" />
+                                                        <FeatureItem label="Sticky Target" value="Toggle" />
+                                                        <FeatureSlider label="Smoothness" min={1} max={50} step={0.5} value={smoothing} onChange={setSmoothing} />
+                                                    </FeatureSection>
+                                                    <FeatureSection title="FOV Configuration">
+                                                        <FeatureItem label="Draw FOV" value="Active" />
+                                                        <FeatureSlider label="FOV Size" min={10} max={800} step={1} value={fovSize} onChange={setFovSize} />
+                                                        <FeatureItem label="FOV Shape" value="Circle / Square / Poly" />
+                                                        <FeatureItem label="FOV Color" value="Custom" />
+                                                    </FeatureSection>
+                                                    <FeatureSection title="Predictions">
+                                                        <FeatureSlider label="Prediction X" min={0} max={1} step={0.01} value={predictionX} onChange={setPredictionX} />
+                                                        <FeatureSlider label="Prediction Y" min={0} max={1} step={0.01} value={predictionY} onChange={setPredictionY} />
+                                                    </FeatureSection>
+                                                </>
+                                            )}
+                                            {activeFeatureCategory === 'Rage' && (
+                                                <>
+                                                    <FeatureSection title="Movement">
+                                                        <FeatureSlider label="Walk Speed" min={16} max={250} step={1} value={walkSpeed} onChange={setWalkSpeed} />
+                                                        <FeatureItem label="Walk Keybind" value="[V]" />
+                                                        <FeatureSlider label="Jump Power" min={50} max={500} step={5} value={jumpPower} onChange={setJumpPower} />
+                                                        <FeatureItem label="Jump Keybind" value="[B]" />
+                                                    </FeatureSection>
+                                                    <FeatureSection title="Angles">
+                                                        <FeatureItem label="Spin Bot" value="Toggle" />
+                                                        <FeatureItem label="Orbit" value="Toggle" />
+                                                        <FeatureSlider label="Spin Speed" min={0} max={50} step={1} value={spinSpeed} onChange={setSpinSpeed} />
+                                                        <FeatureSlider label="Orbit X" min={-10} max={10} step={0.1} value={orbitX} onChange={setOrbitX} />
+                                                        <FeatureSlider label="Orbit Y" min={-10} max={10} step={0.1} value={orbitY} onChange={setOrbitY} />
+                                                    </FeatureSection>
+                                                    <FeatureSection title="Other">
+                                                        <FeatureItem label="Anti Stomp" value="Toggle" />
+                                                        <FeatureItem label="Anti AFK" value="Active" />
+                                                        <FeatureItem label="Auto Farm" value="Module" />
+                                                    </FeatureSection>
+                                                </>
+                                            )}
+                                            {activeFeatureCategory === 'Visuals' && (
+                                                <>
+                                                    <FeatureSection title="ESP Features">
+                                                        <FeatureItem label="Box ESP" value="Bounding/Corner/Round" />
+                                                        <FeatureItem label="Chams" value="Active" />
+                                                        <FeatureItem label="Skeleton" value="Toggle" />
+                                                        <FeatureItem label="Tracers" value="Center" />
+                                                        <FeatureItem label="HealthBar" value="Vertical" />
+                                                    </FeatureSection>
+                                                    <FeatureSection title="Info ESP">
+                                                        <FeatureItem label="Name" value="Active" />
+                                                        <FeatureItem label="Tool" value="Toggle" />
+                                                        <FeatureItem label="Distance" value="Toggle" />
+                                                        <FeatureItem label="RigType" value="R6/R15" />
+                                                        <FeatureItem label="State/Flags" value="Active" />
+                                                    </FeatureSection>
+                                                    <FeatureSection title="Options">
+                                                        <FeatureItem label="Box Fill/Gradient" value="Toggle" />
+                                                        <FeatureItem label="Team Check" value="Enabled" />
+                                                        <FeatureItem label="LocalPlayer Check" value="Toggle" />
+                                                        <FeatureItem label="Tracer Origin" value="Bottom" />
+                                                    </FeatureSection>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
