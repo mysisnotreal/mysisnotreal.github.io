@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toffee.lol</title>
+    <title>mys.client</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -11,7 +11,7 @@
           theme: {
             extend: {
               colors: {
-                Toffee: '#5C544E',
+                mys_client: '#5C544E',
               }
             }
           }
@@ -159,14 +159,14 @@
         const DISCORD_LINK = "https://discord.gg/3M3q7Dbg3k";
         const DOWNLOAD_LINK = "";
         const PREVIEW_YOUTUBE_ID = "GhRlHIaWT2w";
-        const Toffee_ICON_URL = "https://raw.githubusercontent.com/mysisnotreal/mysisnotreal.github.io/refs/heads/main/image-removebg-preview%20(16).png";
+        const mys_client_ICON_URL = "https://raw.githubusercontent.com/mysisnotreal/mysisnotreal.github.io/refs/heads/main/image-removebg-preview%20(16).png";
 
         const BrowserTab = ({ id, label, icon, isActive, onClick }) => (
             <button
                 onClick={() => onClick(id)}
                 className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 relative ${
                     isActive 
-                    ? 'bg-[#18181b] text-Toffee rounded-t-lg border-x border-t border-zinc-800' 
+                    ? 'bg-[#18181b] text-mys_client rounded-t-lg border-x border-t border-zinc-800' 
                     : 'text-zinc-500 hover:text-zinc-300'
                 }`}
             >
@@ -179,7 +179,7 @@
         const FeatureItem = ({ label, value }) => (
             <div className="flex items-center justify-between py-2 border-b border-zinc-800/50 last:border-0 group">
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-Toffee/40 group-hover:scale-125 transition-transform"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-mys_client/40 group-hover:scale-125 transition-transform"></div>
                     <span className="text-zinc-300 text-sm group-hover:text-white transition-colors">{label}</span>
                 </div>
                 {value && <span className="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800">{value}</span>}
@@ -209,17 +209,17 @@
                 </div>
             );
         };
-
+/*
         const FeatureSection = ({ title, children }) => (
-            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-Toffee/10 transition-colors h-full">
-                <h3 className="text-Toffee/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                    <div className="w-4 h-px bg-Toffee/20"></div>
+            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-mys_client/10 transition-colors h-full">
+                <h3 className="text-mys_client/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <div className="w-4 h-px bg-mys_client/20"></div>
                     {title}
                 </h3>
                 <div className="flex flex-col">{children}</div>
             </div>
         );
-
+*/
         const DownloadModal = ({ isOpen, onClose }) => {
             const [progress, setProgress] = useState(0);
             const [isFinished, setIsFinished] = useState(false);
@@ -260,8 +260,8 @@
                         )}
                         
                         <div className="text-center space-y-6">
-                            <div className="w-20 h-20 bg-Toffee/10 rounded-full flex items-center justify-center mx-auto border border-Toffee/20 overflow-hidden p-3">
-                                <img src={Toffee_ICON_URL} alt="Toffee" className="w-full h-full object-contain" />
+                            <div className="w-20 h-20 bg-mys_client/10 rounded-full flex items-center justify-center mx-auto border border-mys_client/20 overflow-hidden p-3">
+                                <img src={mys_client_ICON_URL} alt="mys_client" className="w-full h-full object-contain" />
                             </div>
                             
                             <div className="space-y-2">
@@ -273,7 +273,7 @@
                             <div className="space-y-4">
                                 <div className="w-full h-2 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
                                     <div 
-                                        className="h-full bg-Toffee shadow-[0_0_15px_rgba(252,202,210,0.5)] transition-all duration-300 ease-out"
+                                        className="h-full bg-mys_client shadow-[0_0_15px_rgba(252,202,210,0.5)] transition-all duration-300 ease-out"
                                         style={{ width: `${progress}%` }}
                                     ></div>
                                 </div>
@@ -285,7 +285,7 @@
                                         href={DOWNLOAD_LINK} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="block w-full py-4 bg-Toffee text-[#09090b] font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-Toffee/20 text-center"
+                                        className="block w-full py-4 bg-mys_client text-[#09090b] font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-mys_client/20 text-center"
                                     >
                                         Continue
                                     </a>
@@ -341,11 +341,11 @@
                                     </div>
                                     <div className="flex gap-1">
                                         <BrowserTab id="home" label="Home" icon="fa-house" isActive={activeTab === 'home'} onClick={setActiveTab} />
-                                        <BrowserTab id="features" label="Features" icon="fa-bolt" isActive={activeTab === 'features'} onClick={setActiveTab} />
+                                        <BrowserTab id="versions" label="Versions" icon="fa-bolt" isActive={activeTab === 'versions'} onClick={setActiveTab} />
                                     </div>
                                 </div>
                                 <div className="pb-3">
-                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-Toffee/10 hover:bg-Toffee/20 text-Toffee px-3 py-1.5 rounded-md text-xs font-semibold transition-colors border border-Toffee/20">
+                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-mys_client/10 hover:bg-mys_client/20 text-mys_client px-3 py-1.5 rounded-md text-xs font-semibold transition-colors border border-mys_client/20">
                                         <i className="fa-brands fa-discord"></i>
                                         <span>Join Community</span>
                                     </a>
@@ -360,8 +360,8 @@
                                     <i className="fa-solid fa-rotate-right cursor-pointer hover:text-zinc-400 ml-1"></i>
                                 </div>
                                 <div className="flex-1 bg-zinc-900/50 rounded-md py-1 px-3 text-xs text-zinc-500 font-mono flex items-center gap-2 border border-zinc-800">
-                                    <i className="fa-solid fa-lock text-[10px] text-Toffee"></i>
-                                    <span>Toffee.lol/{activeTab}</span>
+                                    <i className="fa-solid fa-lock text-[10px] text-mys_client"></i>
+                                    <span>mys.client/{activeTab}</span>
                                 </div>
                             </div>
 
@@ -371,21 +371,21 @@
                                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                                             <div className="space-y-6">
                                                 <div className="flex items-start gap-4">
-                                                    <img src={Toffee_ICON_URL} alt="Toffee Icon" className="w-32 h-32 object-contain mt-1" />
+                                                    <img src={mys_client_ICON_URL} alt="mys_client Icon" className="w-32 h-32 object-contain mt-1" />
                                                     <h2 className="text-3xl font-bold text-white leading-tight">
-                                                        Toffee.lol <br/> 
-                                                        <span className="text-Toffee">Made By Cheaters For Cheaters.</span>
+                                                        mys_client.lol <br/> 
+                                                        <span className="text-mys_client">Made By Cheaters For Cheaters.</span>
                                                     </h2>
                                                 </div>
                                                 <p className="text-zinc-400 leading-relaxed">
-                                                    Toffee.lol works completely outside the game, using memory scanning and kernel-level monitoring to observe and interact without ever injecting into the game process. By remaining fully external, it avoids the usual detection paths that internal tools rely on, reducing exposure to common anti-cheat checks while keeping performance stable and behavior consistent.
+                                                    mys.client is the #1 mic up and mic up 17+ script, using security features to make your experience undetected, and smooth while playing. It avoids the usual detection paths that other scripts rely on, reducing exposure to common anti-cheat checks while keeping performance stable and behavior consistent.
                                                 </p>
                                                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                                                     <button 
                                                         onClick={() => setIsDownloadModalOpen(true)}
-                                                        className="px-8 py-3 bg-Toffee text-[#09090b] font-bold rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-Toffee/10 text-center"
+                                                        className="px-8 py-3 bg-mys_client text-[#09090b] font-bold rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-mys_client/10 text-center"
                                                     >
-                                                        Download
+                                                        Open Script!
                                                     </button>
                                                     <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-zinc-900/50 text-zinc-300 font-bold rounded-lg border border-zinc-800 hover:border-zinc-700 transition-colors text-center inline-block">Join Discord</a>
                                                 </div>
@@ -399,7 +399,7 @@
                                         <div className="bg-[#0c0c0e]/60 border border-zinc-800/50 rounded-lg overflow-hidden flex flex-col">
                                             <div className="px-5 py-3 border-b border-zinc-800/50 bg-zinc-900/20 flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
-                                                    <i className="fa-solid fa-terminal text-Toffee text-xs"></i>
+                                                    <i className="fa-solid fa-terminal text-mys_client text-xs"></i>
                                                     <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-[0.2em]">Live Changelog</span>
                                                 </div>
                                                 <div className="flex gap-1.5"><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div></div>
@@ -407,32 +407,32 @@
                                             <div className="p-6 space-y-3 font-mono">
                                                 <div className="space-y-2">
                                                     <div className="flex gap-4 group">
-                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
-                                                        <span className="text-zinc-300 text-xs">First Look / 1/27/2026</span>
+                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">First Look / 3/27/2025</span>
                                                     </div>
                                                     {/*
                                                     <div className="flex gap-4 group">
-                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
                                                         <span className="text-zinc-300 text-xs">released - 1/17/2026</span>
                                                     </div>
                                                     <div className="flex gap-4 group">
-                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
                                                         <span className="text-zinc-300 text-xs">Fog changer - Visuals -> Misc subtab</span>
                                                     </div>
                                                     <div className="flex gap-4 group">
-                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
                                                         <span className="text-zinc-300 text-xs">Visuals UI reorganization - Main/Info/Misc subtabs</span>
                                                     </div>
                                                     <div className="flex gap-4 group">
-                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
                                                         <span className="text-zinc-300 text-xs">Box fill gradients - 6 gradient directions with color customization</span>
                                                     </div>
                                                     <div className="flex gap-4 group">
-                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
                                                         <span className="text-zinc-300 text-xs">ESP customization - Box outline thickness, corner size, rounding, name font size, name background, tracer gradient</span>
                                                     </div>
                                                     <div className="flex gap-4 group">
-                                                        <span className="text-Toffee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
                                                         <span className="text-zinc-300 text-xs">FOV shape styles - Circle, Square, Triangle, Pentagon, Hexagon, Octagon</span>
                                                     </div>*/}
                                                 </div>
@@ -444,19 +444,20 @@
                                     </div>
                                 )}
 
-                                {activeTab === 'features' && (
+                                {activeTab === 'versions' && (
                                     <div className="flex flex-col h-full relative animate-in">
                                         {/* Feature Categories Navigation */}
                                         <div className="flex gap-2 mb-8 bg-zinc-900/50 p-1 rounded-xl border border-zinc-800 self-start backdrop-blur-sm">
                                             {['Legit', 'Rage', 'Visuals'].map((cat) => (
-                                                <button key={cat} onClick={() => setActiveFeatureCategory(cat)} className={`px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2.5 ${activeFeatureCategory === cat ? 'bg-Toffee text-[#09090b] shadow-lg shadow-Toffee/10' : 'text-zinc-500 hover:text-zinc-300'}`}>
+                                                <button key={cat} onClick={() => setActiveFeatureCategory(cat)} className={`px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2.5 ${activeFeatureCategory === cat ? 'bg-mys_client text-[#09090b] shadow-lg shadow-mys_client/10' : 'text-zinc-500 hover:text-zinc-300'}`}>
                                                     <i className={`fa-solid ${categoryIcons[cat]} text-[10px]`}></i>
                                                     {cat}
                                                 </button>
                                             ))}
                                         </div>
 
-                                        {/* Features Grid */}
+                                        {/* versions Grid */}
+{/*
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
                                             {activeFeatureCategory === 'Legit' && (
                                                 <>
@@ -534,7 +535,7 @@
                 </div>
             );
         };
-
+        */
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
