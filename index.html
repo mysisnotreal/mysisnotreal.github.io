@@ -4,20 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mys.client</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                mys_client: '#5C544E',
-              }
+            theme: {
+                extend: {
+                    colors: {
+                        mys_client: '#8556BF',
+                    }
+                }
             }
-          }
         }
     </script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
@@ -47,8 +45,7 @@
         /* Custom Cursor */
         #custom-cursor {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             width: 24px;
             height: 24px;
             pointer-events: none;
@@ -78,24 +75,24 @@
         .cursor-plus::after {
             width: 2px;
             height: 100%;
-            top: 0; left: 6px;
+            top: 0;
+            left: 6px;
         }
 
         #vanta-bg {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
         }
-        
+
         #root {
             position: relative;
             z-index: 10;
         }
 
-        /* Custom Slider Style */
+        /* Custom Slider */
         .custom-slider-container {
             position: relative;
             width: 100%;
@@ -105,16 +102,14 @@
         }
         .custom-slider-fill {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             height: 100%;
             background-color: #5C544E;
             transition: width 0.05s linear;
         }
         .custom-slider-input {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
             opacity: 0;
@@ -122,39 +117,21 @@
             z-index: 2;
         }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react/": "https://esm.sh/react@^19.2.4/"
-  }
-}
-</script>
-</head>
-<body>
-    <div id="vanta-bg"></div>
-    <div id="root"></div>
-    <div id="custom-cursor">
-        <div class="cursor-plus"></div>
-    </div>
 
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="vanta-bg"></div>
+    <div id="root"></div>
+    
+    <div id="custom-cursor">
+        <div class="cursor-plus"></div>
+    </div>
 
     <script type="text/babel">
-                    // no view source \\
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-    if (
-        e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') ||
-        (e.ctrlKey && e.key.toLowerCase() === 'u')
-    ) e.preventDefault();
-    });
-        
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect } = React;
 
         const DISCORD_LINK = "https://discord.gg/3M3q7Dbg3k";
         const DOWNLOAD_LINK = "";
@@ -196,12 +173,12 @@
                     </div>
                     <div className="custom-slider-container">
                         <div className="custom-slider-fill" style={{ width: `${percentage}%` }}></div>
-                        <input 
-                            type="range" 
-                            min={min} 
-                            max={max} 
-                            step={step} 
-                            value={value} 
+                        <input
+                            type="range"
+                            min={min}
+                            max={max}
+                            step={step}
+                            value={value}
                             onChange={(e) => onChange(parseFloat(e.target.value))}
                             className="custom-slider-input"
                         />
@@ -209,47 +186,39 @@
                 </div>
             );
         };
-/*
-        const FeatureSection = ({ title, children }) => (
-            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-mys_client/10 transition-colors h-full">
-                <h3 className="text-mys_client/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                    <div className="w-4 h-px bg-mys_client/20"></div>
-                    {title}
-                </h3>
-                <div className="flex flex-col">{children}</div>
-            </div>
-        );
-*/
+
         const DownloadModal = ({ isOpen, onClose }) => {
             const [progress, setProgress] = useState(0);
             const [isFinished, setIsFinished] = useState(false);
 
             useEffect(() => {
-                if (isOpen) {
-                    setProgress(0);
-                    setIsFinished(false);
-                    const interval = setInterval(() => {
-                        setProgress((prev) => {
-                            if (prev >= 100) {
-                                clearInterval(interval);
-                                setIsFinished(true);
-                                return 100;
-                            }
-                            return prev + Math.floor(Math.random() * 5) + 2;
-                        });
-                    }, 100);
-                    return () => clearInterval(interval);
-                }
+                if (!isOpen) return;
+                
+                setProgress(0);
+                setIsFinished(false);
+
+                const interval = setInterval(() => {
+                    setProgress((prev) => {
+                        if (prev >= 100) {
+                            clearInterval(interval);
+                            setIsFinished(true);
+                            return 100;
+                        }
+                        return prev + Math.floor(Math.random() * 5) + 2;
+                    });
+                }, 100);
+
+                return () => clearInterval(interval);
             }, [isOpen]);
 
             if (!isOpen) return null;
 
             return (
-                <div 
+                <div
                     onClick={onClose}
                     className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-in"
                 >
-                    <div 
+                    <div
                         onClick={(e) => e.stopPropagation()}
                         className="bg-[#0c0c0e] border border-zinc-800 w-full max-w-md rounded-2xl p-8 shadow-2xl relative"
                     >
@@ -258,12 +227,12 @@
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
                         )}
-                        
+
                         <div className="text-center space-y-6">
                             <div className="w-20 h-20 bg-mys_client/10 rounded-full flex items-center justify-center mx-auto border border-mys_client/20 overflow-hidden p-3">
                                 <img src={mys_client_ICON_URL} alt="mys_client" className="w-full h-full object-contain" />
                             </div>
-                            
+
                             <div className="space-y-2">
                                 <h3 className="text-xl font-bold text-white">
                                     {isFinished ? 'Link Ready' : 'Fetching newest download link'}
@@ -272,7 +241,7 @@
 
                             <div className="space-y-4">
                                 <div className="w-full h-2 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
-                                    <div 
+                                    <div
                                         className="h-full bg-mys_client shadow-[0_0_15px_rgba(252,202,210,0.5)] transition-all duration-300 ease-out"
                                         style={{ width: `${progress}%` }}
                                     ></div>
@@ -281,9 +250,9 @@
 
                             {isFinished && (
                                 <div className="pt-4 animate-in">
-                                    <a 
-                                        href={DOWNLOAD_LINK} 
-                                        target="_blank" 
+                                    <a
+                                        href={DOWNLOAD_LINK}
+                                        target="_blank"
                                         rel="noopener noreferrer"
                                         className="block w-full py-4 bg-mys_client text-[#09090b] font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-mys_client/20 text-center"
                                     >
@@ -299,21 +268,7 @@
 
         const App = () => {
             const [activeTab, setActiveTab] = useState('home');
-            const [activeFeatureCategory, setActiveFeatureCategory] = useState('Legit');
             const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
-
-            // Settings states
-            const [fovSize, setFovSize] = useState(90.0);
-            const [smoothing, setSmoothing] = useState(12.5);
-            const [predictionX, setPredictionX] = useState(0.12);
-            const [predictionY, setPredictionY] = useState(0.08);
-            const [walkSpeed, setWalkSpeed] = useState(16.0);
-            const [jumpPower, setJumpPower] = useState(50.0);
-            const [spinSpeed, setSpinSpeed] = useState(5.0);
-            const [orbitX, setOrbitX] = useState(1.0);
-            const [orbitY, setOrbitY] = useState(0.5);
-
-            const categoryIcons = { Legit: 'fa-user-shield', Rage: 'fa-skull', Visuals: 'fa-eye' };
 
             useEffect(() => {
                 const cursor = document.getElementById('custom-cursor');
@@ -328,9 +283,10 @@
             return (
                 <div className="min-h-screen relative flex flex-col">
                     <DownloadModal isOpen={isDownloadModalOpen} onClose={() => setIsDownloadModalOpen(false)} />
-                    
+
                     <main className="px-6 pt-16 pb-20 relative flex-1">
                         <div className="w-full max-w-6xl mx-auto mt-8 mb-20 bg-[#09090b]/80 backdrop-blur-md rounded-xl border border-zinc-800 shadow-2xl overflow-hidden flex flex-col">
+                            
                             {/* Browser Header */}
                             <div className="bg-[#0c0c0e]/90 border-b border-zinc-800 px-4 pt-3 flex items-center justify-between">
                                 <div className="flex items-center gap-4">
@@ -345,7 +301,8 @@
                                     </div>
                                 </div>
                                 <div className="pb-3">
-                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-mys_client/10 hover:bg-mys_client/20 text-mys_client px-3 py-1.5 rounded-md text-xs font-semibold transition-colors border border-mys_client/20">
+                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" 
+                                       className="flex items-center gap-2 bg-mys_client/10 hover:bg-mys_client/20 text-mys_client px-3 py-1.5 rounded-md text-xs font-semibold transition-colors border border-mys_client/20">
                                         <i className="fa-brands fa-discord"></i>
                                         <span>Join Community</span>
                                     </a>
@@ -365,15 +322,15 @@
                                 </div>
                             </div>
 
-                            <div className="p-8 h-full min-h-[600px] bg-transparent relative">
+                            <div className="p-8 min-h-[600px] bg-transparent relative">
                                 {activeTab === 'home' && (
                                     <div className="space-y-12 pb-16 animate-in">
                                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                                             <div className="space-y-6">
                                                 <div className="flex items-start gap-4">
-                                                    <img src={mys_client_ICON_URL} alt="mys_client Icon" className="w-32 h-32 object-contain mt-1" />
+                                                    <img src={mys_client_ICON_URL} alt="mys_client" className="w-32 h-32 object-contain mt-1" />
                                                     <h2 className="text-3xl font-bold text-white leading-tight">
-                                                        mys_client.lol <br/> 
+                                                        mys_client.lol <br/>
                                                         <span className="text-mys_client">Made By Cheaters For Cheaters.</span>
                                                     </h2>
                                                 </div>
@@ -381,28 +338,40 @@
                                                     mys.client is the #1 mic up and mic up 17+ script, using security features to make your experience undetected, and smooth while playing. It avoids the usual detection paths that other scripts rely on, reducing exposure to common anti-cheat checks while keeping performance stable and behavior consistent.
                                                 </p>
                                                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                                                    <button 
+                                                    <button
                                                         onClick={() => setIsDownloadModalOpen(true)}
                                                         className="px-8 py-3 bg-mys_client text-[#09090b] font-bold rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-mys_client/10 text-center"
                                                     >
                                                         Open Script!
                                                     </button>
-                                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-zinc-900/50 text-zinc-300 font-bold rounded-lg border border-zinc-800 hover:border-zinc-700 transition-colors text-center inline-block">Join Discord</a>
+                                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" 
+                                                       className="px-8 py-3 bg-zinc-900/50 text-zinc-300 font-bold rounded-lg border border-zinc-800 hover:border-zinc-700 transition-colors text-center inline-block">
+                                                        Join Discord
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-zinc-800 shadow-2xl bg-zinc-900/40 group">
-                                                <iframe className="w-full h-full" src={`https://www.youtube.com/embed/${PREVIEW_YOUTUBE_ID}?autoplay=0&controls=1&rel=0`} frameBorder="0" allowFullScreen></iframe>
+                                                <iframe 
+                                                    className="w-full h-full" 
+                                                    src={`https://www.youtube.com/embed/${PREVIEW_YOUTUBE_ID}?autoplay=0&controls=1&rel=0`} 
+                                                    frameBorder="0" 
+                                                    allowFullScreen
+                                                ></iframe>
                                             </div>
                                         </div>
 
-                                        {/* Changelog Section */}
+                                        {/* Changelog */}
                                         <div className="bg-[#0c0c0e]/60 border border-zinc-800/50 rounded-lg overflow-hidden flex flex-col">
                                             <div className="px-5 py-3 border-b border-zinc-800/50 bg-zinc-900/20 flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
                                                     <i className="fa-solid fa-terminal text-mys_client text-xs"></i>
                                                     <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-[0.2em]">Live Changelog</span>
                                                 </div>
-                                                <div className="flex gap-1.5"><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div></div>
+                                                <div className="flex gap-1.5">
+                                                    <div className="w-2 h-2 rounded-full bg-zinc-800"></div>
+                                                    <div className="w-2 h-2 rounded-full bg-zinc-800"></div>
+                                                    <div className="w-2 h-2 rounded-full bg-zinc-800"></div>
+                                                </div>
                                             </div>
                                             <div className="p-6 space-y-3 font-mono">
                                                 <div className="space-y-2">
@@ -410,122 +379,11 @@
                                                         <span className="text-mys_client font-bold text-xs select-none">[+]</span>
                                                         <span className="text-zinc-300 text-xs">First Look / 3/27/2025</span>
                                                     </div>
-                                                    {/*
-                                                    <div className="flex gap-4 group">
-                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
-                                                        <span className="text-zinc-300 text-xs">released - 1/17/2026</span>
-                                                    </div>
-                                                    <div className="flex gap-4 group">
-                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
-                                                        <span className="text-zinc-300 text-xs">Fog changer - Visuals -> Misc subtab</span>
-                                                    </div>
-                                                    <div className="flex gap-4 group">
-                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
-                                                        <span className="text-zinc-300 text-xs">Visuals UI reorganization - Main/Info/Misc subtabs</span>
-                                                    </div>
-                                                    <div className="flex gap-4 group">
-                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
-                                                        <span className="text-zinc-300 text-xs">Box fill gradients - 6 gradient directions with color customization</span>
-                                                    </div>
-                                                    <div className="flex gap-4 group">
-                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
-                                                        <span className="text-zinc-300 text-xs">ESP customization - Box outline thickness, corner size, rounding, name font size, name background, tracer gradient</span>
-                                                    </div>
-                                                    <div className="flex gap-4 group">
-                                                        <span className="text-mys_client font-bold text-xs select-none">[+]</span>
-                                                        <span className="text-zinc-300 text-xs">FOV shape styles - Circle, Square, Triangle, Pentagon, Hexagon, Octagon</span>
-                                                    </div>*/}
                                                 </div>
                                                 <div className="pt-4 border-t border-zinc-800/30">
                                                     <span className="text-zinc-600 text-[10px] italic">End of logs... waiting for updates.</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {activeTab === 'versions' && (
-                                    <div className="flex flex-col h-full relative animate-in">
-                                        {/* Feature Categories Navigation */}
-                                        <div className="flex gap-2 mb-8 bg-zinc-900/50 p-1 rounded-xl border border-zinc-800 self-start backdrop-blur-sm">
-                                            {['Legit', 'Rage', 'Visuals'].map((cat) => (
-                                                <button key={cat} onClick={() => setActiveFeatureCategory(cat)} className={`px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2.5 ${activeFeatureCategory === cat ? 'bg-mys_client text-[#09090b] shadow-lg shadow-mys_client/10' : 'text-zinc-500 hover:text-zinc-300'}`}>
-                                                    <i className={`fa-solid ${categoryIcons[cat]} text-[10px]`}></i>
-                                                    {cat}
-                                                </button>
-                                            ))}
-                                        </div>
-
-                                        {/* versions Grid */}
-{/*
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
-                                            {activeFeatureCategory === 'Legit' && (
-                                                <>
-                                                    <FeatureSection title="Aimbot">
-                                                        <FeatureItem label="Aimbot" value="Toggle" />
-                                                        <FeatureItem label="Aim Mode" value="Mouse / Camera" />
-                                                        <FeatureItem label="Target Hitbox" value="Head / Torso" />
-                                                        <FeatureItem label="Sticky Target" value="Toggle" />
-                                                        <FeatureSlider label="Smoothness" min={1} max={50} step={0.5} value={smoothing} onChange={setSmoothing} />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="FOV Configuration">
-                                                        <FeatureItem label="Draw FOV" value="Active" />
-                                                        <FeatureSlider label="FOV Size" min={10} max={800} step={1} value={fovSize} onChange={setFovSize} />
-                                                        <FeatureItem label="FOV Shape" value="Circle / Square / Poly" />
-                                                        <FeatureItem label="FOV Color" value="Custom" />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Predictions">
-                                                        <FeatureSlider label="Prediction X" min={0} max={1} step={0.01} value={predictionX} onChange={setPredictionX} />
-                                                        <FeatureSlider label="Prediction Y" min={0} max={1} step={0.01} value={predictionY} onChange={setPredictionY} />
-                                                    </FeatureSection>
-                                                </>
-                                            )}
-                                            {activeFeatureCategory === 'Rage' && (
-                                                <>
-                                                    <FeatureSection title="Movement">
-                                                        <FeatureSlider label="Walk Speed" min={16} max={250} step={1} value={walkSpeed} onChange={setWalkSpeed} />
-                                                        <FeatureItem label="Walk Keybind" value="[V]" />
-                                                        <FeatureSlider label="Jump Power" min={50} max={500} step={5} value={jumpPower} onChange={setJumpPower} />
-                                                        <FeatureItem label="Jump Keybind" value="[B]" />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Angles">
-                                                        <FeatureItem label="Spin Bot" value="Toggle" />
-                                                        <FeatureItem label="Orbit" value="Toggle" />
-                                                        <FeatureSlider label="Spin Speed" min={0} max={50} step={1} value={spinSpeed} onChange={setSpinSpeed} />
-                                                        <FeatureSlider label="Orbit X" min={-10} max={10} step={0.1} value={orbitX} onChange={setOrbitX} />
-                                                        <FeatureSlider label="Orbit Y" min={-10} max={10} step={0.1} value={orbitY} onChange={setOrbitY} />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Other">
-                                                        <FeatureItem label="Anti Stomp" value="Toggle" />
-                                                        <FeatureItem label="Anti AFK" value="Active" />
-                                                        <FeatureItem label="Auto Farm" value="Module" />
-                                                    </FeatureSection>
-                                                </>
-                                            )}
-                                            {activeFeatureCategory === 'Visuals' && (
-                                                <>
-                                                    <FeatureSection title="ESP Features">
-                                                        <FeatureItem label="Box ESP" value="Bounding/Corner/Round" />
-                                                        <FeatureItem label="Chams" value="Active" />
-                                                        <FeatureItem label="Skeleton" value="Toggle" />
-                                                        <FeatureItem label="Tracers" value="Center" />
-                                                        <FeatureItem label="HealthBar" value="Vertical" />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Info ESP">
-                                                        <FeatureItem label="Name" value="Active" />
-                                                        <FeatureItem label="Tool" value="Toggle" />
-                                                        <FeatureItem label="Distance" value="Toggle" />
-                                                        <FeatureItem label="RigType" value="R6/R15" />
-                                                        <FeatureItem label="State/Flags" value="Active" />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Options">
-                                                        <FeatureItem label="Box Fill/Gradient" value="Toggle" />
-                                                        <FeatureItem label="Team Check" value="Enabled" />
-                                                        <FeatureItem label="LocalPlayer Check" value="Toggle" />
-                                                        <FeatureItem label="Tracer Origin" value="Bottom" />
-                                                    </FeatureSection>
-                                                </>
-                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -535,9 +393,9 @@
                 </div>
             );
         };
-        */
+
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        root.render(React.createElement(App));
     </script>
 </body>
 </html>
