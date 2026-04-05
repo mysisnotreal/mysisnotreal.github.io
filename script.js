@@ -6,8 +6,7 @@ const mainFrame = document.getElementById('mainFrame');
 const sideFrame = document.getElementById('sideFrame');
 const btmFrame = document.getElementById('btmFrame');
 const invites = [
-  "djMQRCNAAZ",
-  "yBG37e32XT"
+  "3M3q7Dbg3k",
 ];
 const discordUserId = "950555329266065428";
 const discordAvatarHash = "default";
