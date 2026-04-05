@@ -3,57 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mys.client version downloader</title>
+    <title>mys.client • Script</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #09090b;
-            color: #fafafa;
+            background-color: #0a0a0b;
+            color: #f4f4f5;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0;
+            overflow: hidden;
         }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
         .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(17, 17, 19, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(63, 63, 70, 0.6);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+        }
+
+        .code-box {
+            background: #111113;
+            border: 1px solid #27272a;
         }
     </style>
 </head>
 <body>
-    <div class="max-w-2xl w-full mx-auto px-6">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-semibold tracking-tight mb-2">mys.client</h1>
-            <p class="text-zinc-400">Click the button to copy the script</p>
+    <div class="max-w-4xl w-full mx-auto px-6">
+        <div class="text-center mb-10">
+            <div class="flex justify-center mb-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center shadow-inner">
+                    <span class="text-white text-3xl font-bold tracking-tighter">m</span>
+                </div>
+            </div>
+            <h1 class="text-5xl font-bold tracking-tighter text-white">mys.client</h1>
+            <p class="text-zinc-400 mt-2 text-lg">Latest version loader</p>
         </div>
-        <div class="glass rounded-3xl p-8 shadow-2xl">
-            <div class="flex gap-3">
-                <div class="flex-1">
+
+        <div class="glass rounded-3xl p-10">
+            <div class="flex gap-6">
+                <div class="flex-[2]">
                     <div id="textBox"
-                        class="w-full h-48 bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4 text-zinc-200 resize-none focus:outline-none focus:border-violet-500 transition-colors font-mono text-sm overflow-auto"
-                    >loadstring(game:HttpGet("http://www.mysclient.lol/v7.5.3"))()</div>
+                        class="code-box w-full h-56 rounded-2xl p-6 text-zinc-200 font-mono text-sm overflow-auto resize-none focus:outline-none focus:border-mys transition-colors leading-relaxed">
+loadstring(game:HttpGet("http://www.mysclient.lol/v7.5.3"))()
+                    </div>
                 </div>
                 <div class="flex flex-col justify-center">
                     <button
                         id="copyBtn"
-                        class="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 transition-all text-white font-medium px-8 py-4 rounded-2xl flex items-center gap-2 shadow-lg shadow-violet-500/30 focus:outline-none focus:ring-4 focus:ring-violet-500/30"
-                    >
-                        <i class="fa-solid fa-copy"></i>
-                        <span>Copy</span>
+                        class="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 transition-all duration-200 text-white font-semibold px-10 py-5 rounded-2xl flex items-center gap-3 shadow-xl shadow-violet-500/30 focus:outline-none focus:ring-4 focus:ring-violet-500/40 text-base whitespace-nowrap">
+                        <i class="fa-solid fa-copy text-lg"></i>
+                        <span>Copy Script</span>
                     </button>
                 </div>
             </div>
-            <div id="status" class="mt-6 text-center text-sm font-medium text-emerald-400 opacity-0 transition-opacity"></div>
+
+            <div id="status" class="mt-8 text-center text-sm font-medium transition-opacity opacity-0"></div>
         </div>
-        <p class="text-center text-zinc-500 text-xs mt-8">
-            Simple • Clean • Fast
+
+        <p class="text-center text-zinc-500 text-xs mt-10 tracking-widest">
+            SIMPLE • CLEAN • UNDETECTED
         </p>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
+
     <script>
         const textBox = document.getElementById('textBox');
         const copyBtn = document.getElementById('copyBtn');
@@ -61,22 +83,24 @@
 
         copyBtn.addEventListener('click', async () => {
             const text = textBox.textContent.trim();
-           
+          
             if (!text) {
                 showStatus("Nothing to copy!", "text-red-400");
                 return;
             }
+
             try {
                 await navigator.clipboard.writeText(text);
                 showStatus("✓ Copied to clipboard", "text-emerald-400");
-               
-                copyBtn.innerHTML = `<i class="fa-solid fa-check"></i><span>Copied!</span>`;
+
+                const originalHTML = copyBtn.innerHTML;
+                copyBtn.innerHTML = `<i class="fa-solid fa-check text-lg"></i><span>Copied!</span>`;
                 copyBtn.classList.add('!bg-emerald-600', '!shadow-emerald-500/30');
-               
+
                 setTimeout(() => {
-                    copyBtn.innerHTML = `<i class="fa-solid fa-copy"></i><span>Copy</span>`;
+                    copyBtn.innerHTML = originalHTML;
                     copyBtn.classList.remove('!bg-emerald-600', '!shadow-emerald-500/30');
-                }, 2000);
+                }, 2200);
             } catch (err) {
                 showStatus("Failed to copy", "text-red-400");
             }
@@ -84,9 +108,9 @@
 
         function showStatus(message, colorClass) {
             status.textContent = message;
-            status.className = `mt-6 text-center text-sm font-medium transition-opacity ${colorClass}`;
+            status.className = `mt-8 text-center text-sm font-medium transition-opacity ${colorClass}`;
             status.style.opacity = "1";
-           
+          
             setTimeout(() => {
                 status.style.opacity = "0";
             }, 2500);
