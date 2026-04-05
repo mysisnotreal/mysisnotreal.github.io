@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+   
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -20,21 +20,20 @@
             margin: 0;
             overflow: hidden;
         }
-        
+       
         .font-mono {
             font-family: 'JetBrains Mono', monospace;
         }
-
         .glass {
             background: rgba(17, 17, 19, 0.85);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(63, 63, 70, 0.6);
             box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
         }
-
         .code-box {
             background: #111113;
             border: 1px solid #27272a;
+            user-select: all;
         }
     </style>
 </head>
@@ -54,7 +53,7 @@
             <div class="flex gap-6">
                 <div class="flex-[2]">
                     <div id="textBox"
-                        class="code-box w-full h-56 rounded-2xl p-6 text-zinc-200 font-mono text-sm overflow-auto resize-none focus:outline-none focus:border-mys transition-colors leading-relaxed">
+                        class="code-box w-full h-56 rounded-2xl p-6 text-zinc-200 font-mono text-sm overflow-auto resize-none focus:outline-none leading-relaxed whitespace-pre-wrap break-all">
 loadstring(game:HttpGet("http://www.mysclient.lol/v7.5.3"))()
                     </div>
                 </div>
@@ -67,7 +66,6 @@ loadstring(game:HttpGet("http://www.mysclient.lol/v7.5.3"))()
                     </button>
                 </div>
             </div>
-
             <div id="status" class="mt-8 text-center text-sm font-medium transition-opacity opacity-0"></div>
         </div>
 
@@ -83,7 +81,7 @@ loadstring(game:HttpGet("http://www.mysclient.lol/v7.5.3"))()
 
         copyBtn.addEventListener('click', async () => {
             const text = textBox.textContent.trim();
-          
+
             if (!text) {
                 showStatus("Nothing to copy!", "text-red-400");
                 return;
@@ -91,18 +89,43 @@ loadstring(game:HttpGet("http://www.mysclient.lol/v7.5.3"))()
 
             try {
                 await navigator.clipboard.writeText(text);
+
                 showStatus("✓ Copied to clipboard", "text-emerald-400");
 
                 const originalHTML = copyBtn.innerHTML;
                 copyBtn.innerHTML = `<i class="fa-solid fa-check text-lg"></i><span>Copied!</span>`;
-                copyBtn.classList.add('!bg-emerald-600', '!shadow-emerald-500/30');
+                copyBtn.classList.add('!bg-emerald-600', '!shadow-emerald-500/30', 'scale-105');
 
                 setTimeout(() => {
                     copyBtn.innerHTML = originalHTML;
-                    copyBtn.classList.remove('!bg-emerald-600', '!shadow-emerald-500/30');
+                    copyBtn.classList.remove('!bg-emerald-600', '!shadow-emerald-500/30', 'scale-105');
                 }, 2200);
+
             } catch (err) {
-                showStatus("Failed to copy", "text-red-400");
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+
+                    showStatus("✓ Copied to clipboard", "text-emerald-400");
+                    const originalHTML = copyBtn.innerHTML;
+                    copyBtn.innerHTML = `<i class="fa-solid fa-check text-lg"></i><span>Copied!</span>`;
+                    copyBtn.classList.add('!bg-emerald-600', '!shadow-emerald-500/30');
+
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHTML;
+                        copyBtn.classList.remove('!bg-emerald-600', '!shadow-emerald-500/30');
+                    }, 2200);
+
+                } catch (fallbackErr) {
+                    showStatus("Failed to copy. Please select and copy manually.", "text-red-400");
+                    console.error("Copy failed:", err, fallbackErr);
+                }
             }
         });
 
@@ -110,7 +133,7 @@ loadstring(game:HttpGet("http://www.mysclient.lol/v7.5.3"))()
             status.textContent = message;
             status.className = `mt-8 text-center text-sm font-medium transition-opacity ${colorClass}`;
             status.style.opacity = "1";
-          
+
             setTimeout(() => {
                 status.style.opacity = "0";
             }, 2500);
