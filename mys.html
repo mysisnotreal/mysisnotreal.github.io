@@ -1,50 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mys | #1 Best Lua Programmer</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://files.catbox.moe/u66c0x.png" rel="icon" type="image/png"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mys | #1 Best Lua Programmer</title>
+    <link href="https://files.catbox.moe/u66c0x.png" rel="icon" type="image/png"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Roboto Slab', serif;
+            cursor: url('https://files.catbox.moe/gm774i.png') 32 32, auto;
+        }
+
+        video#bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: filter 1s ease;
+        }
+
+        #splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+            opacity: 1;
+            transition: opacity 0.7s ease;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        #splash span {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 200;
+            font-size: 2.8rem;
+            color: #ffffff;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
+                    drop-shadow(0 0 16px rgba(255, 255, 255, 0.6))
+                    drop-shadow(0 0 24px rgba(255, 255, 255, 0.4))
+                    drop-shadow(0 0 40px rgba(255, 255, 255, 0.2));
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        #splash .cursor {
+            display: inline-block;
+            width: 4px;
+            height: 2.8rem;
+            background-color: #ffffff;
+            border-radius: 2px;
+            margin-left: 4px;
+            transform: translateY(4px);
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
+                        drop-shadow(0 0 16px rgba(255, 255, 255, 0.6))
+                        drop-shadow(0 0 24px rgba(255, 255, 255, 0.4))
+                        drop-shadow(0 0 40px rgba(255, 255, 255, 0.2));
+            }
+            50% {
+                filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1))
+                        drop-shadow(0 0 20px rgba(255, 255, 255, 0.8))
+                        drop-shadow(0 0 30px rgba(255, 255, 255, 0.6))
+                        drop-shadow(0 0 50px rgba(255, 255, 255, 0.4));
+            }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        #watermark {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Roboto Slab', serif;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.30);
+            filter: drop-shadow(0 0 20px #ffffff)
+                    drop-shadow(0 0 30px #ffffff)
+                    drop-shadow(0 0 50px #ffffff);
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        #frameContainer {
+            position: fixed;
+            top: 50%;
+            left: 55%;
+            perspective: 1200px;
+            display: flex;
+            gap: 20px;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        #innerFrameContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #mainFrame {
+            width: 600px;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(2px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            transition: opacity 1s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #sideFrame {
+            width: 150px;
+            height: 587.5px;
+            background: rgba(0, 0, 0, 0);
+            border-radius: 12px;
+            backdrop-filter: blur(2px);
+            padding-top: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            z-index: 3;
+            transition: opacity 1s ease;
+        }
+
+        #btmFrame {
+            width: 600px;
+            height: 185px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(2px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            z-index: 3;
+            transition: opacity 1s ease;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+        }
+
+        .user-pfp {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            margin-right: 20px;
+            flex-shrink: 0;
+            transform: translateY(-15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .user-display-name {
+            font-size: 1.65rem;
+            color: white;
+            margin: 0;
+            font-weight: 600;
+            font-family: 'Inter', system-ui, sans-serif;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .user-display-name .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.65rem;
+            background-color: white;
+            border-radius: 1.5px;
+            margin-left: 3px;
+            transform: translateY(2px);
+            animation: blink 0.7s infinite;
+        }
+
+        .user-username {
+            font-size: 1rem;
+            color: rgba(189, 189, 189, 0.6);
+            margin: 2px 6px 0;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .bio-container {
+            margin-top: 15px;
+            width: 100%;
+            max-width: 485px;
+        }
+
+        .bio-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 1), rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .bio-content {
+            font-size: 0.92rem;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.45;
+            max-height: 155px;
+            overflow-y: auto;
+            padding-right: 10px;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .bio-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .bio-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .bio-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .bio-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .bio-link {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .bio-link:hover {
+            color: #a0a0a0;
+            text-decoration: underline;
+        }
+
+        .server-list {
+            width: 96.5%;
+            max-height: 300px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px 10px 10px 10px;
+        }
+
+        .server-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
+            border-radius: 14px;
+            backdrop-filter: blur(6px);
+            transition: all 0.4s ease;
+        }
+
+        .server-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .server-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .server-info {
+            flex: 1;
+            color: white;
+        }
+
+        .server-name {
+            font-size: 1.05rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .server-stats {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 3px 0 0;
+        }
+
+        .server-stats .online {
+            color: #43b581;
+        }
+
+        .join-btn {
+            background: rgba(56, 160, 89, 0.3);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .join-btn:hover {
+            background: #2f8e4b;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            #frameContainer {
+                flex-direction: column;
+                left: 50%;
+                gap: 15px;
+            }
+            #mainFrame, #btmFrame {
+                width: 90vw;
+                max-width: 500px;
+            }
+            #sideFrame {
+                width: 90vw;
+                height: 180px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="splash"><span></span></div>
 
-<div id="frameContainer">
-  <div id="innerFrameContainer">
-    <div id="mainFrame">
-      <div class="user-info">
-        <img id="userPfp" src="" alt="User Profile Picture" class="user-pfp">
-        <div class="user-details">
-          <h2 id="userDisplayName" class="user-display-name"></h2>
-          <p id="userUsername" class="user-username"></p>
-          <div class="bio-container">
-            <h3 class="bio-title">Bio</h3>
-            <div class="bio-content">
-              Owner Of Mys.Client | #1 Best Mic Up Script! <br>
-              #1 Lua Programmer <br>
-              Website Made By Mys (01xMYS) <br>
-              <br>
-              Roblox: <a href="https://www.roblox.com/users/7646924628/profile" target="_blank" class="bio-link">https://www.roblox.com/users/mys</a>
-              <br>
-              Discord (Profile): <a href="https://discord.com/users/950555329266065428" target="_blank" class="bio-link">https://discord.com/users/mys</a>
-              <br>
-              Discord (Server): <a href="https://discord.gg/djMQRCNAAZ" target="_blank" class="bio-link">https://discord.gg/mys.client</a>
-              <br>
-              Youtube (main): <a href="https://www.youtube.com/@silenceof" target="_blank" class="bio-link">https://youtube.com/mys</a>
-              <br>
-              Youtube (Alt): <a href="https://www.youtube.com/@mys_of" target="_blank" class="bio-link">https://youtube.com/mysAlt</a>
+    <div id="frameContainer">
+        <div id="innerFrameContainer">
+            <div id="mainFrame">
+                <div class="user-info">
+                    <img id="userPfp" src="" alt="User Profile Picture" class="user-pfp">
+                    <div class="user-details">
+                        <h2 id="userDisplayName" class="user-display-name"></h2>
+                        <p id="userUsername" class="user-username"></p>
+                        
+                        <div class="bio-container">
+                            <h3 class="bio-title">Bio</h3>
+                            <div class="bio-content">
+                                Owner Of Mys.Client | #1 Best Mic Up Script!<br>
+                                #1 Lua Programmer<br>
+                                Website Made By Mys (01xMYS)<br><br>
+                                
+                                Roblox: <a href="https://www.roblox.com/users/7646924628/profile" target="_blank" class="bio-link">mys</a><br>
+                                Discord (Profile): <a href="https://discord.com/users/950555329266065428" target="_blank" class="bio-link">mys</a><br>
+                                Discord (Server): <a href="https://discord.gg/djMQRCNAAZ" target="_blank" class="bio-link">mys.client</a><br>
+                                Youtube (Main): <a href="https://www.youtube.com/@silenceof" target="_blank" class="bio-link">@silenceof</a><br>
+                                Youtube (Alt): <a href="https://www.youtube.com/@mys_of" target="_blank" class="bio-link">@mys_of</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <div id="btmFrame">
+                <div class="server-list" id="serverList"></div>
+            </div>
         </div>
-      </div>
+        
+        <div id="sideFrame"></div>
     </div>
-    <div id="btmFrame">
-      <div class="server-list" id="serverList"></div>
-    </div>
-  </div>
-  <div id="sideFrame"></div>
-</div>
 
     <div id="watermark">© mys.client all rights reserved 2025</div>
 
@@ -52,8 +415,248 @@
         <source src="https://r2.guns.lol/dc16a0ff-2462-4ecc-ac02-39ec72ff3ce6.mp4" type="video/mp4">
     </video>
 
-    <audio id="backgroundAudio"></audio>
+    <audio id="backgroundAudio" preload="none"></audio>
 
-    <script src="script.js"></script>
+    <script>
+        const audio = document.getElementById('backgroundAudio');
+        const splash = document.getElementById('splash');
+        const textSpan = splash.querySelector('span');
+        const bgVideo = document.getElementById('bgVideo');
+        const mainFrame = document.getElementById('mainFrame');
+        const sideFrame = document.getElementById('sideFrame');
+        const btmFrame = document.getElementById('btmFrame');
+
+        const invites = ["3M3q7Dbg3k"];
+        const discordUserId = "950555329266065428";
+        const discordAvatarHash = "default";
+        const placeholderDisplayName = "mys";
+        const placeholderUsername = ".mys_fr";
+
+        const audioList = [
+            "https://github.com/mysisnotreal/audio/raw/refs/heads/main/tuff.mp3.mp3",
+            "https://github.com/mysisnotreal/audio/raw/refs/heads/main/tuffer.mp3",
+            "https://github.com/mysisnotreal/audio/raw/refs/heads/main/Different%20Music%20(kltekk%20Mix).mp3",
+            "https://github.com/mysisnotreal/audio/raw/refs/heads/main/Too%20Legendary%20(A.T.%20mixxx).mp3",
+            "https://github.com/mysisnotreal/audio/raw/refs/heads/main/Bank%20Specialist%20Mixxx.mp3",
+            "https://github.com/mysisnotreal/audio/raw/refs/heads/main/EBK%20Jaaybo%20-%205K%20(Lyrics).mp3",
+            "https://github.com/mysisnotreal/audio/raw/refs/heads/main/Klmhonos%20%E2%80%93%20This%20Love%20(Remix)%20%5BOfficial%20Video%5D.mp3"
+        ];
+
+        function setUserData() {
+            const pfpUrl = discordAvatarHash === "default"
+                ? "https://i.pinimg.com/736x/66/78/7e/66787e293f540054e10aa49cd24b935a.jpg"
+                : `https://cdn.discordapp.com/avatars/${discordUserId}/${discordAvatarHash}.webp?size=128`;
+
+            document.getElementById("userPfp").src = pfpUrl;
+            document.getElementById("userUsername").textContent = `@${placeholderUsername}`;
+
+            const displayNameElement = document.getElementById("userDisplayName");
+            typeUserDisplayName(displayNameElement);
+        }
+
+        function typeUserDisplayName(element) {
+            let cursor = element.querySelector('.cursor');
+            if (!cursor) {
+                cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                element.appendChild(cursor);
+            }
+
+            let index = 0;
+            let deleting = false;
+            const text = placeholderDisplayName;
+            const textNode = document.createTextNode('');
+            element.insertBefore(textNode, cursor);
+
+            function type() {
+                if (!deleting) {
+                    if (index <= text.length) {
+                        textNode.textContent = text.substring(0, index);
+                        index++;
+                        setTimeout(type, 550);
+                    } else {
+                        deleting = true;
+                        setTimeout(type, 800);
+                    }
+                } else {
+                    if (index > 0) {
+                        textNode.textContent = text.substring(0, index - 1);
+                        index--;
+                        setTimeout(type, 300);
+                    } else {
+                        deleting = false;
+                        setTimeout(type, 600);
+                    }
+                }
+            }
+            type();
+        }
+
+        async function fetchServerData(invite) {
+            try {
+                const res = await fetch(`https://discord.com/api/v10/invites/${invite}?with_counts=true&with_expiration=true`);
+                if (!res.ok) throw new Error("Failed to fetch");
+                
+                const data = await res.json();
+                
+                const card = document.createElement("div");
+                card.className = "server-card";
+
+                const iconUrl = data.guild.icon
+                    ? `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.webp?size=128`
+                    : "https://cdn.discordapp.com/embed/avatars/0.png";
+
+                card.innerHTML = `
+                    <img src="${iconUrl}" class="server-icon" alt="Server Icon">
+                    <div class="server-info">
+                        <h2 class="server-name">${data.guild.name}</h2>
+                        <p class="server-stats">
+                            <span class="online">${data.approximate_presence_count} Online</span> • 
+                            <span class="members">${data.approximate_member_count} Members</span>
+                        </p>
+                    </div>
+                    <a href="https://discord.gg/${invite}" target="_blank" class="join-btn">Join</a>
+                `;
+
+                document.getElementById("serverList").appendChild(card);
+            } catch (err) {
+                console.error("Error fetching server:", invite, err);
+            }
+        }
+
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+        let velocityX = 0, velocityY = 0;
+        const rotationFactor = 18;
+        const stiffness = 0.12;
+        const damping = 0.88;
+        const wobbleFactor = 0.08;
+        let isHovering = false;
+
+        mainFrame.addEventListener('mouseenter', () => isHovering = true);
+        mainFrame.addEventListener('mouseleave', () => {
+            isHovering = false;
+            targetX = 0;
+            targetY = 0;
+        });
+
+        mainFrame.addEventListener('mousemove', (e) => {
+            if (!isHovering) return;
+            const rect = mainFrame.getBoundingClientRect();
+            const mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+            const mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+            
+            targetX = mouseY * rotationFactor;
+            targetY = mouseX * rotationFactor;
+        });
+
+        function animate3D() {
+            const forceX = targetX - currentX;
+            const forceY = targetY - currentY;
+            
+            velocityX += forceX * stiffness * wobbleFactor;
+            velocityY += forceY * stiffness * wobbleFactor;
+            
+            velocityX *= damping;
+            velocityY *= damping;
+            
+            currentX += velocityX;
+            currentY += velocityY;
+
+            mainFrame.style.transform = `rotateX(${-currentX}deg) rotateY(${currentY}deg)`;
+            requestAnimationFrame(animate3D);
+        }
+
+        const splashText = "click to view";
+        let splashIndex = 0;
+        let splashDeleting = false;
+
+        function typeSplashEffect() {
+            let cursor = textSpan.querySelector('.cursor');
+            if (!cursor) {
+                cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                textSpan.appendChild(cursor);
+            }
+
+            if (!splashDeleting) {
+                if (splashIndex <= splashText.length) {
+                    textSpan.firstChild.textContent = splashText.substring(0, splashIndex);
+                    splashIndex++;
+                    setTimeout(typeSplashEffect, 180);
+                } else {
+                    splashDeleting = true;
+                    setTimeout(typeSplashEffect, 1400);
+                }
+            } else {
+                if (splashIndex > 0) {
+                    textSpan.firstChild.textContent = splashText.substring(0, splashIndex - 1);
+                    splashIndex--;
+                    setTimeout(typeSplashEffect, 90);
+                } else {
+                    splashDeleting = false;
+                    textSpan.firstChild.textContent = '';
+                    setTimeout(typeSplashEffect, 300);
+                }
+            }
+        }
+
+        function initializeSplashText() {
+            const textNode = document.createTextNode('');
+            textSpan.insertBefore(textNode, textSpan.firstChild || null);
+            typeSplashEffect();
+        }
+
+        function fadeInAudio(audioElement, targetVolume = 0.25, duration = 8000) {
+            audioElement.volume = 0;
+            audioElement.play().catch(() => {});
+            
+            const stepTime = 60;
+            const step = targetVolume / (duration / stepTime);
+            
+            const interval = setInterval(() => {
+                if (audioElement.volume < targetVolume) {
+                    audioElement.volume = Math.min(audioElement.volume + step, targetVolume);
+                } else {
+                    clearInterval(interval);
+                }
+            }, stepTime);
+        }
+
+        let currentAudioIndex = Math.floor(Math.random() * audioList.length);
+        audio.src = audioList[currentAudioIndex];
+
+        audio.addEventListener('ended', () => {
+            currentAudioIndex = (currentAudioIndex + 1) % audioList.length;
+            audio.src = audioList[currentAudioIndex];
+            audio.load();
+            audio.play().catch(() => {});
+        });
+
+        bgVideo.addEventListener('contextmenu', e => e.preventDefault());
+
+        splash.addEventListener('click', () => {
+            fadeInAudio(audio, 0.22, 9000);
+            
+            splash.style.opacity = '0';
+            bgVideo.style.filter = 'blur(0px)';
+            
+            setTimeout(() => {
+                splash.style.display = 'none';
+                mainFrame.style.opacity = '1';
+                sideFrame.style.opacity = '1';
+                btmFrame.style.opacity = '1';
+            }, 900);
+        });
+
+        window.onload = () => {
+            setUserData();
+            invites.forEach(code => fetchServerData(code));
+            initializeSplashText();
+            animate3D();
+            
+            bgVideo.style.filter = 'blur(32px)';
+        };
+    </script>
 </body>
 </html>
