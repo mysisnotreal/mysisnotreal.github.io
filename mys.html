@@ -6,7 +6,7 @@
     <title>mys | #1 Best Lua Programmer</title>
     <link href="https://files.catbox.moe/u66c0x.png" rel="icon" type="image/png"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
-    
+   
     <style>
         html, body {
             margin: 0;
@@ -111,7 +111,7 @@
             position: fixed;
             top: 50%;
             left: 55%;
-            perspective: 1200px;
+            perspective: 1400px;
             display: flex;
             gap: 20px;
             transform: translate(-50%, -50%);
@@ -255,17 +255,14 @@
         .bio-content::-webkit-scrollbar {
             width: 6px;
         }
-
         .bio-content::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 3px;
         }
-
         .bio-content::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.3);
             border-radius: 3px;
         }
-
         .bio-content::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.5);
         }
@@ -275,7 +272,6 @@
             text-decoration: none;
             transition: all 0.3s ease;
         }
-
         .bio-link:hover {
             color: #a0a0a0;
             text-decoration: underline;
@@ -382,14 +378,14 @@
                     <div class="user-details">
                         <h2 id="userDisplayName" class="user-display-name"></h2>
                         <p id="userUsername" class="user-username"></p>
-                        
+                       
                         <div class="bio-container">
                             <h3 class="bio-title">Bio</h3>
                             <div class="bio-content">
                                 Owner Of Mys.Client | #1 Best Mic Up Script!<br>
                                 #1 Lua Programmer<br>
                                 Website Made By Mys (01xMYS)<br><br>
-                                
+                               
                                 Roblox: <a href="https://www.roblox.com/users/7646924628/profile" target="_blank" class="bio-link">mys</a><br>
                                 Discord (Profile): <a href="https://discord.com/users/950555329266065428" target="_blank" class="bio-link">mys</a><br>
                                 Discord (Server): <a href="https://discord.gg/djMQRCNAAZ" target="_blank" class="bio-link">mys.client</a><br>
@@ -405,7 +401,7 @@
                 <div class="server-list" id="serverList"></div>
             </div>
         </div>
-        
+       
         <div id="sideFrame"></div>
     </div>
 
@@ -430,7 +426,7 @@
         const discordUserId = "950555329266065428";
         const discordAvatarHash = "default";
         const placeholderDisplayName = "mys";
-        const placeholderUsername = ".mys_fr";
+        const placeholderUsername = "48ao";
 
         const audioList = [
             "https://github.com/mysisnotreal/audio/raw/refs/heads/main/tuff.mp3.mp3",
@@ -461,7 +457,6 @@
                 cursor.className = 'cursor';
                 element.appendChild(cursor);
             }
-
             let index = 0;
             let deleting = false;
             const text = placeholderDisplayName;
@@ -496,12 +491,11 @@
             try {
                 const res = await fetch(`https://discord.com/api/v10/invites/${invite}?with_counts=true&with_expiration=true`);
                 if (!res.ok) throw new Error("Failed to fetch");
-                
+               
                 const data = await res.json();
-                
+               
                 const card = document.createElement("div");
                 card.className = "server-card";
-
                 const iconUrl = data.guild.icon
                     ? `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.webp?size=128`
                     : "https://cdn.discordapp.com/embed/avatars/0.png";
@@ -511,60 +505,32 @@
                     <div class="server-info">
                         <h2 class="server-name">${data.guild.name}</h2>
                         <p class="server-stats">
-                            <span class="online">${data.approximate_presence_count} Online</span> • 
+                            <span class="online">${data.approximate_presence_count} Online</span> •
                             <span class="members">${data.approximate_member_count} Members</span>
                         </p>
                     </div>
                     <a href="https://discord.gg/${invite}" target="_blank" class="join-btn">Join</a>
                 `;
-
                 document.getElementById("serverList").appendChild(card);
             } catch (err) {
                 console.error("Error fetching server:", invite, err);
             }
         }
+        
+        let tX = 0, tY = 0;
+        let cX = 0, cY = 0;
+        const wrapper = document.getElementById('frameContainer');
 
-        let targetX = 0, targetY = 0;
-        let currentX = 0, currentY = 0;
-        let velocityX = 0, velocityY = 0;
-        const rotationFactor = 18;
-        const stiffness = 0.12;
-        const damping = 0.88;
-        const wobbleFactor = 0.08;
-        let isHovering = false;
-
-        mainFrame.addEventListener('mouseenter', () => isHovering = true);
-        mainFrame.addEventListener('mouseleave', () => {
-            isHovering = false;
-            targetX = 0;
-            targetY = 0;
+        document.addEventListener('mousemove', (e) => {
+            tX = (e.clientX / window.innerWidth - 0.5) * 15;
+            tY = (e.clientY / window.innerHeight - 0.5) * -15;
         });
 
-        mainFrame.addEventListener('mousemove', (e) => {
-            if (!isHovering) return;
-            const rect = mainFrame.getBoundingClientRect();
-            const mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-            const mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-            
-            targetX = mouseY * rotationFactor;
-            targetY = mouseX * rotationFactor;
-        });
-
-        function animate3D() {
-            const forceX = targetX - currentX;
-            const forceY = targetY - currentY;
-            
-            velocityX += forceX * stiffness * wobbleFactor;
-            velocityY += forceY * stiffness * wobbleFactor;
-            
-            velocityX *= damping;
-            velocityY *= damping;
-            
-            currentX += velocityX;
-            currentY += velocityY;
-
-            mainFrame.style.transform = `rotateX(${-currentX}deg) rotateY(${currentY}deg)`;
-            requestAnimationFrame(animate3D);
+        function tilt() {
+            cX += (tX - cX) * 0.05;
+            cY += (tY - cY) * 0.05;
+            wrapper.style.transform = `rotateY(${cX}deg) rotateX(${cY}deg)`;
+            requestAnimationFrame(tilt);
         }
 
         const splashText = "click to view";
@@ -578,7 +544,6 @@
                 cursor.className = 'cursor';
                 textSpan.appendChild(cursor);
             }
-
             if (!splashDeleting) {
                 if (splashIndex <= splashText.length) {
                     textSpan.firstChild.textContent = splashText.substring(0, splashIndex);
@@ -610,10 +575,10 @@
         function fadeInAudio(audioElement, targetVolume = 0.25, duration = 8000) {
             audioElement.volume = 0;
             audioElement.play().catch(() => {});
-            
+           
             const stepTime = 60;
             const step = targetVolume / (duration / stepTime);
-            
+           
             const interval = setInterval(() => {
                 if (audioElement.volume < targetVolume) {
                     audioElement.volume = Math.min(audioElement.volume + step, targetVolume);
@@ -637,10 +602,10 @@
 
         splash.addEventListener('click', () => {
             fadeInAudio(audio, 0.22, 9000);
-            
+           
             splash.style.opacity = '0';
             bgVideo.style.filter = 'blur(0px)';
-            
+           
             setTimeout(() => {
                 splash.style.display = 'none';
                 mainFrame.style.opacity = '1';
@@ -653,8 +618,8 @@
             setUserData();
             invites.forEach(code => fetchServerData(code));
             initializeSplashText();
-            animate3D();
-            
+            tilt();
+           
             bgVideo.style.filter = 'blur(32px)';
         };
     </script>
