@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mys | #1 Best Lua Programmer</title>
+    <title>mys</title>
     <link href="https://files.catbox.moe/u66c0x.png" rel="icon" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --text-glow: drop-shadow(0 0 8px rgba(255,255,255,0.8))
@@ -14,7 +13,6 @@
                         drop-shadow(0 0 24px rgba(255,255,255,0.4))
                         drop-shadow(0 0 40px rgba(255,255,255,0.2));
         }
-
         html, body {
             margin: 0;
             padding: 0;
@@ -24,7 +22,6 @@
             font-family: 'Roboto Slab', serif;
             cursor: url('https://files.catbox.moe/gm774i.png') 32 32, auto;
         }
-
         video#bgVideo {
             position: fixed;
             top: 0;
@@ -35,7 +32,6 @@
             z-index: 1;
             transition: filter 1s ease;
         }
-
         #splash {
             position: fixed;
             top: 0;
@@ -46,11 +42,11 @@
             justify-content: center;
             align-items: center;
             z-index: 10;
-            background: rgba(0, 0, 0, 0.4);
+            background: #000000;
             opacity: 1;
-            transition: opacity 0.7s ease;
+            transition: opacity 0.6s ease-out;
+            pointer-events: all;
         }
-
         #splash span {
             font-weight: 200;
             font-size: 2.8rem;
@@ -59,9 +55,7 @@
             display: inline-block;
             white-space: nowrap;
             position: relative;
-            animation: glowPulse 2s ease-in-out infinite;
         }
-
         #splash .cursor {
             display: inline-block;
             width: 4px;
@@ -72,22 +66,10 @@
             vertical-align: middle;
             animation: blink 0.7s infinite;
         }
-
-        @keyframes glowPulse {
-            0%, 100% { filter: var(--text-glow); }
-            50% {
-                filter: drop-shadow(0 0 12px rgba(255,255,255,1))
-                        drop-shadow(0 0 20px rgba(255,255,255,0.8))
-                        drop-shadow(0 0 30px rgba(255,255,255,0.6))
-                        drop-shadow(0 0 50px rgba(255,255,255,0.4));
-            }
-        }
-
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
-
         #watermark {
             position: fixed;
             bottom: 20px;
@@ -104,25 +86,19 @@
     </style>
 </head>
 <body>
-
     <div id="splash">
         <span></span>
     </div>
-
-    <div id="watermark">© mys.client all rights reserved 2025</div>
-
+    <div id="watermark">© mys.client all rights reserved 2026</div>
     <video autoplay muted loop id="bgVideo">
-        <source src="https://r2.guns.lol/dc16a0ff-2462-4ecc-ac02-39ec72ff3ce6.mp4" type="video/mp4">
+        <source src="https://files.catbox.moe/chy8j7.mp4" type="video/mp4">
     </video>
-
     <audio id="backgroundAudio" preload="none"></audio>
-
     <script>
         const audio = document.getElementById('backgroundAudio');
         const splash = document.getElementById('splash');
         const textSpan = splash.querySelector('span');
         const bgVideo = document.getElementById('bgVideo');
-
         const splashText = "click to view";
         const audioList = [
             "https://github.com/mysisnotreal/audio/raw/refs/heads/main/tuff.mp3.mp3",
@@ -133,7 +109,6 @@
             "https://github.com/mysisnotreal/audio/raw/refs/heads/main/EBK%20Jaaybo%20-%205K%20(Lyrics).mp3",
             "https://github.com/mysisnotreal/audio/raw/refs/heads/main/Klmhonos%20%E2%80%93%20This%20Love%20(Remix)%20%5BOfficial%20Video%5D.mp3"
         ];
-
         let currentAudioIndex = Math.floor(Math.random() * audioList.length);
         let splashIndex = 0;
         let splashDeleting = false;
@@ -146,10 +121,12 @@
                 textSpan.appendChild(cursor);
             }
 
-            if (!splashDeleting) {
-                textSpan.firstChild.textContent = splashText.substring(0, splashIndex);
-                splashIndex++;
+            const textNode = textSpan.firstChild || document.createTextNode('');
+            if (!textSpan.firstChild) textSpan.appendChild(textNode);
 
+            if (!splashDeleting) {
+                textNode.textContent = splashText.substring(0, splashIndex);
+                splashIndex++;
                 if (splashIndex <= splashText.length) {
                     setTimeout(typeSplashEffect, 180);
                 } else {
@@ -157,14 +134,13 @@
                     setTimeout(typeSplashEffect, 1400);
                 }
             } else {
-                textSpan.firstChild.textContent = splashText.substring(0, splashIndex - 1);
+                textNode.textContent = splashText.substring(0, splashIndex - 1);
                 splashIndex--;
-
                 if (splashIndex > 0) {
                     setTimeout(typeSplashEffect, 90);
                 } else {
                     splashDeleting = false;
-                    textSpan.firstChild.textContent = '';
+                    textNode.textContent = '';
                     setTimeout(typeSplashEffect, 300);
                 }
             }
@@ -179,10 +155,8 @@
         function fadeInAudio(targetVolume = 0.22, duration = 9000) {
             audio.volume = 0;
             audio.play().catch(() => {});
-
             const stepTime = 60;
             const step = targetVolume / (duration / stepTime);
-
             const interval = setInterval(() => {
                 if (audio.volume < targetVolume) {
                     audio.volume = Math.min(audio.volume + step, targetVolume);
@@ -194,7 +168,6 @@
 
         function setupAudio() {
             audio.src = audioList[currentAudioIndex];
-            
             audio.addEventListener('ended', () => {
                 currentAudioIndex = (currentAudioIndex + 1) % audioList.length;
                 audio.src = audioList[currentAudioIndex];
@@ -207,24 +180,20 @@
             fadeInAudio();
             splash.style.opacity = '0';
             bgVideo.style.filter = 'blur(0px)';
-
             setTimeout(() => {
                 splash.style.display = 'none';
-            }, 900);
+            }, 700);
         }
 
         let tX = 0, tY = 0;
         let cX = 0, cY = 0;
-
         function setupTilt() {
             const wrapper = document.getElementById('frameContainer');
             if (!wrapper) return;
-
             document.addEventListener('mousemove', (e) => {
                 tX = (e.clientX / window.innerWidth - 0.5) * 15;
                 tY = (e.clientY / window.innerHeight - 0.5) * -15;
             });
-
             function tilt() {
                 cX += (tX - cX) * 0.05;
                 cY += (tY - cY) * 0.05;
@@ -238,10 +207,8 @@
             setupAudio();
             initializeSplashText();
             setupTilt();
-
             bgVideo.style.filter = 'blur(32px)';
             bgVideo.addEventListener('contextmenu', e => e.preventDefault());
-
             splash.addEventListener('click', handleSplashClick);
         };
     </script>
