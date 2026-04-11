@@ -4,16 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mys | #1 Best Lua Programmer</title>
-    <link href="https://files.catbox.moe/u66c0x.png" rel="icon" type="image/png"/>
+    <link href="https://files.catbox.moe/u66c0x.png" rel="icon" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
-   
+
     <style>
+        :root {
+            --text-glow: drop-shadow(0 0 8px rgba(255,255,255,0.8))
+                        drop-shadow(0 0 16px rgba(255,255,255,0.6))
+                        drop-shadow(0 0 24px rgba(255,255,255,0.4))
+                        drop-shadow(0 0 40px rgba(255,255,255,0.2));
+        }
+
         html, body {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
-            background-color: #000;
+            background: #000;
             font-family: 'Roboto Slab', serif;
             cursor: url('https://files.catbox.moe/gm774i.png') 32 32, auto;
         }
@@ -38,25 +45,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
             z-index: 10;
+            background: rgba(0, 0, 0, 0.4);
             opacity: 1;
             transition: opacity 0.7s ease;
-            background: rgba(0, 0, 0, 0.4);
         }
 
         #splash span {
-            font-family: 'Roboto Slab', serif;
             font-weight: 200;
             font-size: 2.8rem;
             color: #ffffff;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
-                    drop-shadow(0 0 16px rgba(255, 255, 255, 0.6))
-                    drop-shadow(0 0 24px rgba(255, 255, 255, 0.4))
-                    drop-shadow(0 0 40px rgba(255, 255, 255, 0.2));
+            filter: var(--text-glow);
             display: inline-block;
             white-space: nowrap;
-            overflow: hidden;
             position: relative;
             animation: glowPulse 2s ease-in-out infinite;
         }
@@ -65,25 +66,20 @@
             display: inline-block;
             width: 4px;
             height: 2.8rem;
-            background-color: #ffffff;
+            background: #ffffff;
             border-radius: 2px;
-            margin-left: 4px;
-            transform: translateY(4px);
+            margin-left: 6px;
+            vertical-align: middle;
             animation: blink 0.7s infinite;
         }
 
         @keyframes glowPulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
-                        drop-shadow(0 0 16px rgba(255, 255, 255, 0.6))
-                        drop-shadow(0 0 24px rgba(255, 255, 255, 0.4))
-                        drop-shadow(0 0 40px rgba(255, 255, 255, 0.2));
-            }
+            0%, 100% { filter: var(--text-glow); }
             50% {
-                filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1))
-                        drop-shadow(0 0 20px rgba(255, 255, 255, 0.8))
-                        drop-shadow(0 0 30px rgba(255, 255, 255, 0.6))
-                        drop-shadow(0 0 50px rgba(255, 255, 255, 0.4));
+                filter: drop-shadow(0 0 12px rgba(255,255,255,1))
+                        drop-shadow(0 0 20px rgba(255,255,255,0.8))
+                        drop-shadow(0 0 30px rgba(255,255,255,0.6))
+                        drop-shadow(0 0 50px rgba(255,255,255,0.4));
             }
         }
 
@@ -97,19 +93,21 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            font-family: 'Roboto Slab', serif;
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.30);
-            filter: drop-shadow(0 0 20px #ffffff)
-                    drop-shadow(0 0 30px #ffffff)
-                    drop-shadow(0 0 50px #ffffff);
+            color: rgba(255, 255, 255, 0.3);
+            filter: drop-shadow(0 0 20px #fff)
+                    drop-shadow(0 0 30px #fff)
+                    drop-shadow(0 0 50px #fff);
             pointer-events: none;
             z-index: 15;
         }
     </style>
 </head>
 <body>
-    <div id="splash"><span></span></div>
+
+    <div id="splash">
+        <span></span>
+    </div>
 
     <div id="watermark">© mys.client all rights reserved 2025</div>
 
@@ -124,16 +122,8 @@
         const splash = document.getElementById('splash');
         const textSpan = splash.querySelector('span');
         const bgVideo = document.getElementById('bgVideo');
-        const mainFrame = document.getElementById('mainFrame');
-        const sideFrame = document.getElementById('sideFrame');
-        const btmFrame = document.getElementById('btmFrame');
 
-        const invites = ["3M3q7Dbg3k"];
-        const discordUserId = "950555329266065428";
-        const discordAvatarHash = "default";
-        const placeholderDisplayName = "mys";
-        const placeholderUsername = "48ao";
-
+        const splashText = "click to view";
         const audioList = [
             "https://github.com/mysisnotreal/audio/raw/refs/heads/main/tuff.mp3.mp3",
             "https://github.com/mysisnotreal/audio/raw/refs/heads/main/tuffer.mp3",
@@ -143,24 +133,8 @@
             "https://github.com/mysisnotreal/audio/raw/refs/heads/main/EBK%20Jaaybo%20-%205K%20(Lyrics).mp3",
             "https://github.com/mysisnotreal/audio/raw/refs/heads/main/Klmhonos%20%E2%80%93%20This%20Love%20(Remix)%20%5BOfficial%20Video%5D.mp3"
         ];
-        
-        let tX = 0, tY = 0;
-        let cX = 0, cY = 0;
-        const wrapper = document.getElementById('frameContainer');
 
-        document.addEventListener('mousemove', (e) => {
-            tX = (e.clientX / window.innerWidth - 0.5) * 15;
-            tY = (e.clientY / window.innerHeight - 0.5) * -15;
-        });
-
-        function tilt() {
-            cX += (tX - cX) * 0.05;
-            cY += (tY - cY) * 0.05;
-            wrapper.style.transform = `rotateY(${cX}deg) rotateX(${cY}deg)`;
-            requestAnimationFrame(tilt);
-        }
-
-        const splashText = "click to view";
+        let currentAudioIndex = Math.floor(Math.random() * audioList.length);
         let splashIndex = 0;
         let splashDeleting = false;
 
@@ -171,19 +145,22 @@
                 cursor.className = 'cursor';
                 textSpan.appendChild(cursor);
             }
+
             if (!splashDeleting) {
+                textSpan.firstChild.textContent = splashText.substring(0, splashIndex);
+                splashIndex++;
+
                 if (splashIndex <= splashText.length) {
-                    textSpan.firstChild.textContent = splashText.substring(0, splashIndex);
-                    splashIndex++;
                     setTimeout(typeSplashEffect, 180);
                 } else {
                     splashDeleting = true;
                     setTimeout(typeSplashEffect, 1400);
                 }
             } else {
+                textSpan.firstChild.textContent = splashText.substring(0, splashIndex - 1);
+                splashIndex--;
+
                 if (splashIndex > 0) {
-                    textSpan.firstChild.textContent = splashText.substring(0, splashIndex - 1);
-                    splashIndex--;
                     setTimeout(typeSplashEffect, 90);
                 } else {
                     splashDeleting = false;
@@ -195,59 +172,77 @@
 
         function initializeSplashText() {
             const textNode = document.createTextNode('');
-            textSpan.insertBefore(textNode, textSpan.firstChild || null);
+            textSpan.appendChild(textNode);
             typeSplashEffect();
         }
 
-        function fadeInAudio(audioElement, targetVolume = 0.25, duration = 8000) {
-            audioElement.volume = 0;
-            audioElement.play().catch(() => {});
-           
+        function fadeInAudio(targetVolume = 0.22, duration = 9000) {
+            audio.volume = 0;
+            audio.play().catch(() => {});
+
             const stepTime = 60;
             const step = targetVolume / (duration / stepTime);
-           
+
             const interval = setInterval(() => {
-                if (audioElement.volume < targetVolume) {
-                    audioElement.volume = Math.min(audioElement.volume + step, targetVolume);
+                if (audio.volume < targetVolume) {
+                    audio.volume = Math.min(audio.volume + step, targetVolume);
                 } else {
                     clearInterval(interval);
                 }
             }, stepTime);
         }
 
-        let currentAudioIndex = Math.floor(Math.random() * audioList.length);
-        audio.src = audioList[currentAudioIndex];
-
-        audio.addEventListener('ended', () => {
-            currentAudioIndex = (currentAudioIndex + 1) % audioList.length;
+        function setupAudio() {
             audio.src = audioList[currentAudioIndex];
-            audio.load();
-            audio.play().catch(() => {});
-        });
+            
+            audio.addEventListener('ended', () => {
+                currentAudioIndex = (currentAudioIndex + 1) % audioList.length;
+                audio.src = audioList[currentAudioIndex];
+                audio.load();
+                audio.play().catch(() => {});
+            });
+        }
 
-        bgVideo.addEventListener('contextmenu', e => e.preventDefault());
-
-        splash.addEventListener('click', () => {
-            fadeInAudio(audio, 0.22, 9000);
-           
+        function handleSplashClick() {
+            fadeInAudio();
             splash.style.opacity = '0';
             bgVideo.style.filter = 'blur(0px)';
-           
+
             setTimeout(() => {
                 splash.style.display = 'none';
-                mainFrame.style.opacity = '1';
-                sideFrame.style.opacity = '1';
-                btmFrame.style.opacity = '1';
             }, 900);
-        });
+        }
+
+        let tX = 0, tY = 0;
+        let cX = 0, cY = 0;
+
+        function setupTilt() {
+            const wrapper = document.getElementById('frameContainer');
+            if (!wrapper) return;
+
+            document.addEventListener('mousemove', (e) => {
+                tX = (e.clientX / window.innerWidth - 0.5) * 15;
+                tY = (e.clientY / window.innerHeight - 0.5) * -15;
+            });
+
+            function tilt() {
+                cX += (tX - cX) * 0.05;
+                cY += (tY - cY) * 0.05;
+                wrapper.style.transform = `rotateY(${cX}deg) rotateX(${cY}deg)`;
+                requestAnimationFrame(tilt);
+            }
+            tilt();
+        }
 
         window.onload = () => {
-            setUserData();
-            invites.forEach(code => fetchServerData(code));
+            setupAudio();
             initializeSplashText();
-            tilt();
-           
+            setupTilt();
+
             bgVideo.style.filter = 'blur(32px)';
+            bgVideo.addEventListener('contextmenu', e => e.preventDefault());
+
+            splash.addEventListener('click', handleSplashClick);
         };
     </script>
 </body>
