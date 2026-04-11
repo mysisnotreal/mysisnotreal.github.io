@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>diamond</title>
+    <link href="https://files.catbox.moe/u66c0x.png" rel="icon" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Inter', system-ui, sans-serif;
+            cursor: url('https://files.catbox.moe/gm774i.png') 32 32, auto;
+        }
+        video#bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: filter 1s ease;
+        }
+        #splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background: #000000;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+            pointer-events: all;
+            will-change: opacity;
+        }
+        #splash span {
+            font-weight: 400;
+            font-size: 2.8rem;
+            color: #ffffff;
+            display: inline-block;
+            white-space: nowrap;
+            position: relative;
+            letter-spacing: 0.5px;
+        }
+        #splash .cursor {
+            display: inline-block;
+            width: 4px;
+            height: 2.8rem;
+            background: #ffffff;
+            border-radius: 2px;
+            margin-left: 6px;
+            vertical-align: middle;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        #watermark {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            filter: drop-shadow(0 0 20px #fff)
+                    drop-shadow(0 0 30px #fff)
+                    drop-shadow(0 0 50px #fff);
+            pointer-events: none;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="splash">
+        <span></span>
+    </div>
+    <div id="watermark">© mys.client all rights reserved 2026</div>
+    <video autoplay muted loop id="bgVideo">
+        <source src="https://files.catbox.moe/qmijnj.mp4" type="video/mp4">
+    </video>
+    <audio id="backgroundAudio" preload="none"></audio>
+    <script>
+        const audio = document.getElementById('backgroundAudio');
+        const splash = document.getElementById('splash');
+        const textSpan = splash.querySelector('span');
+        const bgVideo = document.getElementById('bgVideo');
+        const splashText = "click to view";
+        const audioList = [
+            "https://github.com/mysisnotreal/mysisnotreal.github.io/raw/refs/heads/main/For%20Whom%20The%20Bell%20Tolls.mp3"
+        ];
+        let currentAudioIndex = Math.floor(Math.random() * audioList.length);
+        let splashIndex = 0;
+        let splashDeleting = false;
+
+        function typeSplashEffect() {
+            let cursor = textSpan.querySelector('.cursor');
+            if (!cursor) {
+                cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                textSpan.appendChild(cursor);
+            }
+
+            let textNode = textSpan.firstChild;
+            if (!textNode || textNode.nodeType !== Node.TEXT_NODE) {
+                textNode = document.createTextNode('');
+                textSpan.insertBefore(textNode, cursor);
+            }
+
+            if (!splashDeleting) {
+                textNode.textContent = splashText.substring(0, splashIndex);
+                splashIndex++;
+                if (splashIndex <= splashText.length) {
+                    setTimeout(typeSplashEffect, 160);
+                } else {
+                    splashDeleting = true;
+                    setTimeout(typeSplashEffect, 1200);
+                }
+            } else {
+                textNode.textContent = splashText.substring(0, splashIndex - 1);
+                splashIndex--;
+                if (splashIndex > 0) {
+                    setTimeout(typeSplashEffect, 70);
+                } else {
+                    splashDeleting = false;
+                    textNode.textContent = '';
+                    setTimeout(typeSplashEffect, 250);
+                }
+            }
+        }
+
+        function initializeSplashText() {
+            typeSplashEffect();
+        }
+
+        function fadeInAudio(targetVolume = 0.22, duration = 9000) {
+            audio.volume = 0;
+            audio.play().catch(() => {});
+            const stepTime = 60;
+            const step = targetVolume / (duration / stepTime);
+            const interval = setInterval(() => {
+                if (audio.volume < targetVolume) {
+                    audio.volume = Math.min(audio.volume + step, targetVolume);
+                } else {
+                    clearInterval(interval);
+                }
+            }, stepTime);
+        }
+
+        function setupAudio() {
+            audio.src = audioList[currentAudioIndex];
+            audio.addEventListener('ended', () => {
+                currentAudioIndex = (currentAudioIndex + 1) % audioList.length;
+                audio.src = audioList[currentAudioIndex];
+                audio.load();
+                audio.play().catch(() => {});
+            });
+        }
+
+        function handleSplashClick() {
+            fadeInAudio();
+            splash.style.opacity = '0';
+            bgVideo.style.filter = 'blur(0px)';
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 550);
+        }
+
+        let tX = 0, tY = 0;
+        let cX = 0, cY = 0;
+        function setupTilt() {
+            const wrapper = document.getElementById('frameContainer');
+            if (!wrapper) return;
+            document.addEventListener('mousemove', (e) => {
+                tX = (e.clientX / window.innerWidth - 0.5) * 15;
+                tY = (e.clientY / window.innerHeight - 0.5) * -15;
+            });
+            function tilt() {
+                cX += (tX - cX) * 0.05;
+                cY += (tY - cY) * 0.05;
+                wrapper.style.transform = `rotateY(${cX}deg) rotateX(${cY}deg)`;
+                requestAnimationFrame(tilt);
+            }
+            tilt();
+        }
+
+        window.onload = () => {
+            setupAudio();
+            initializeSplashText();
+            setupTilt();
+            bgVideo.style.filter = 'blur(32px)';
+            bgVideo.addEventListener('contextmenu', e => e.preventDefault());
+            splash.addEventListener('click', handleSplashClick);
+        };
+    </script>
+</body>
+</html>
