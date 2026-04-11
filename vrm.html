@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --glass: rgba(0, 0, 0, 0.26);
+            --glass-border: rgba(0, 0, 0, 0.253);
+            --inner-glow: rgba(0, 0, 0, 0.219);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.7);
+            --neon-glow: 0 0 8px #fff, 0 0 12px rgba(255, 255, 255, 0.5);
+        }
+
+        * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; cursor: default; }
+        
+        body {
+            height: 100vh; width: 100vw; overflow: hidden;
+            background-color: #000; font-family: 'Inter', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            perspective: 1200px;
+        }
+
+        #splash {
+            position: fixed; inset: 0; background: #000; z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: var(--text-main); cursor: pointer; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: var(--neon-glow);
+        }
+        .splash-text { font-size: 0.7rem; letter-spacing: 6px; text-transform: uppercase; }
+
+        video#bgVideo {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: 1; 
+            filter: brightness(0.7) saturate(1.1);
+        }
+
+        #mainWrapper {
+            position: relative; z-index: 10;
+            width: 580px; display: flex; flex-direction: column; gap: 12px;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px) saturate(160%);
+            -webkit-backdrop-filter: blur(25px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            box-shadow: inset 0 0 15px var(--inner-glow), 0 15px 35px rgba(0,0,0,0.2);
+            border-radius: 16px;
+            padding: 24px;
+            color: var(--text-main);
+            transition: border 0.3s;
+        }
+        .glass-card:hover { border-color: rgba(255, 255, 255, 0.4); }
+
+        .profile-header { display: flex; align-items: center; gap: 24px; }
+        .avatar-circle { 
+            width: 95px; height: 95px; border-radius: 50%; 
+            object-fit: cover; border: 2px solid var(--glass-border);
+        }
+        
+        .username { 
+            font-size: 1.6rem; font-weight: 600; letter-spacing: -0.5px; 
+            text-shadow: var(--neon-glow);
+            color: #fff !important;
+        }
+        
+        .badge-list { 
+            display: flex; gap: 7px; background: rgba(255,255,255,0.1); 
+            padding: 5px 10px; border-radius: 12px; 
+            border: 1px solid var(--glass-border);
+        }
+        .badge-list i { filter: drop-shadow(0 0 3px #fff); }
+
+        .quote { font-size: 0.85rem; color: #fff; line-height: 1.5; font-weight: 300; text-shadow: 0 0 5px rgba(255,255,255,0.4); }
+        .joined { font-size: 0.65rem; color: var(--text-dim); margin-top: 8px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+
+        .discord-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        
+        .discord-card { 
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px; padding: 14px;
+            display: flex; align-items: center; gap: 14px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .discord-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.05); cursor: pointer; }
+
+        .discord-card p:first-child { text-shadow: var(--neon-glow); font-size: 0.8rem; font-weight: 600; color: #fff; }
+        .small-pfp { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--glass-border); }
+        .status-dot { width: 8px; height: 8px; background: #23a55a; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #23a55a; margin-right: 5px; }
+
+        .player-card { padding: 18px 24px; display: flex; align-items: center; gap: 20px; }
+        .track-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; text-shadow: var(--neon-glow); color: #fff; }
+        
+        .p-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.2); position: relative; border-radius: 10px; cursor: pointer; }
+        #fill { height: 100%; background: #fff; width: 0%; box-shadow: 0 0 10px #fff; border-radius: 10px; }
+        
+        .ctrl-btn { cursor: pointer; filter: drop-shadow(0 0 5px #fff); transition: 0.2s; color: #fff; }
+
+        .footer-stats span { text-shadow: 0 0 5px rgba(255,255,255,0.3); color: var(--text-dim); }
+
+        #watermark { position: fixed; bottom: 25px; font-size: 0.55rem; color: var(--text-dim); letter-spacing: 5px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div id="splash" onclick="start()">
+        <span class="splash-text">Click to initialize</span>
+    </div>
+
+    <video muted loop id="bgVideo">
+        <source src="https://r2.guns.lol/eeaaeb6f-8df9-4be3-bcc8-1c34b8ef8505.mp4" type="video/mp4">
+    </video>
+
+    <div id="mainWrapper">
+        <div class="glass-card">
+            <div class="profile-header">
+                <img src="https://images-ext-1.discordapp.net/external/ulLzJz8WQbozBQX-nRX9lp4XfXc316UXU8yUqm4W4eA/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1475068163388342312/3a31702a9172abff90645fac0c40cf54.png?format=webp&quality=lossless" class="avatar-circle">
+                <div class="user-content">
+                    <div class="name-row">
+                        <span class="username">vrm</span>
+                        <div class="badge-list">
+                            <i data-lucide="zap" style="color:#fff"></i>
+                            <i data-lucide="diamond" style="color:#fff"></i>
+                            <i data-lucide="star" style="color:#fff"></i>
+                            <i data-lucide="snowflake" style="color:#fff"></i>
+                            <i data-lucide="shield-check" style="color:#fff"></i>
+                            <i data-lucide="gift" style="color:#fff"></i>
+                        </div>
+                    </div>
+                    <p class="quote">"The angel of the Lord encamps around those who fear Him, and He delivers them."</p>
+                    <span class="joined">joined since 2020</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="discord-grid">
+            <div class="discord-card">
+                <img src="https://images-ext-1.discordapp.net/external/ulLzJz8WQbozBQX-nRX9lp4XfXc316UXU8yUqm4W4eA/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1475068163388342312/3a31702a9172abff90645fac0c40cf54.png?format=webp&quality=lossless" class="small-pfp">
+                <div>
+                    <p>@capdump</p>
+                </div>
+            </div>
+            <a href="https://discord.gg/5nhpydtQrT" target="_blank" class="discord-card">
+                <img src="https://images-ext-1.discordapp.net/external/jA2XqtBqptUh3xlAK1EPVHNpAqPcK3msiheLky1qPAI/%3Fsize%3D1024/https/cdn.discordapp.com/icons/1490043455819350046/356fa5ac71bc85b3a028155f82c3dbbe.png?format=webp&quality=lossless" class="small-pfp">
+                <div>
+                    <p>VRM Mansion</p>
+                    <p id="discord-status" style="font-size: 0.65rem; color: var(--text-dim);">
+                        <span class="status-dot"></span>Fetching Status...
+                    </p>
+                </div>
+            </a>
+        </div>
+
+        <div class="footer-stats" style="display: flex; gap: 18px; font-size: 0.7rem; padding: 0 8px; text-transform: uppercase;">
+            <span>mys friend</span>
+            <span id="member-count-footer"></span>
+        </div>
+
+        <div class="glass-card player-card" id="playerNode">
+            <div class="song-info" style="flex: 1;">
+                <p class="track-title">Go Check /Mys</p>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span id="cur" style="font-size: 0.65rem; color: #fff;">0:00</span>
+                    <div class="p-bar" onclick="seek(event)"><div id="fill"></div></div>
+                    <span id="total" style="font-size: 0.65rem; color: #fff;">0:00</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <i data-lucide="play" class="ctrl-btn" size="26" id="p-icon" onclick="toggle()"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="watermark">Â© VRM MANSION 2020</div>
+
+    <script>
+        lucide.createIcons();
+        
+        async function fetchDiscord() {
+            try {
+                const response = await fetch(`https://discord.com/api/guilds/1490043455819350046/widget.json`);
+                const data = await response.json();
+                const onlineCount = data.presence_count || 0;
+
+                document.getElementById('discord-status').innerHTML = `<span class="status-dot"></span>${onlineCount} Online`;
+                document.getElementById('member-count-footer').innerText = `Active: ${onlineCount}`;
+            } catch (e) {
+                document.getElementById('discord-status').innerText = "Join Server";
+            }
+        }
+        fetchDiscord();
+
+        const audio = new Audio("https://cdn.discordapp.com/attachments/1490295772967866461/1491167557342859406/eeaaeb6f-8df9-4be3-bcc8-1c34b8ef8505.mp3?ex=69d6b582&is=69d56402&hm=41c1c1e2b27e30aff1650db843ade5f02b0b7c1ed2778512a456b1e19018f5ea&");
+        audio.loop = true;
+
+        function start() {
+            document.getElementById('splash').style.opacity = '0';
+            document.getElementById('splash').style.pointerEvents = 'none';
+            document.getElementById('bgVideo').play();
+            toggle();
+        }
+
+        function toggle() {
+            const icon = document.getElementById('p-icon');
+            if (audio.paused) {
+                audio.play();
+                icon.setAttribute('data-lucide', 'pause');
+            } else {
+                audio.pause();
+                icon.setAttribute('data-lucide', 'play');
+            }
+            lucide.createIcons();
+        }
+
+        function seek(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+        }
+
+        audio.onloadedmetadata = () => {
+            let m = Math.floor(audio.duration / 60), s = Math.floor(audio.duration % 60);
+            document.getElementById('total').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        };
+
+        audio.ontimeupdate = () => {
+            document.getElementById('fill').style.width = (audio.currentTime / audio.duration * 100) + "%";
+            let m = Math.floor(audio.currentTime / 60), s = Math.floor(audio.currentTime % 60);
+            document.getElementById('cur').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        };
+
+        const wrapper = document.getElementById('mainWrapper');
+        let tX = 0, tY = 0, cX = 0, cY = 0;
+        window.addEventListener('mousemove', (e) => {
+            tX = (e.clientX / window.innerWidth - 0.5) * 15;
+            tY = (e.clientY / window.innerHeight - 0.5) * -15;
+        });
+        function tilt() {
+            cX += (tX - cX) * 0.05; cY += (tY - cY) * 0.05;
+            wrapper.style.transform = `rotateY(${cX}deg) rotateX(${cY}deg)`;
+            requestAnimationFrame(tilt);
+        }
+        tilt();
+    </script>
+</body>
+</html>
