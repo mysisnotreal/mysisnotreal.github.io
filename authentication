@@ -1,0 +1,5 @@
+getgenv().script_key = script_key or getgenv().script_key
+local hwid = gethwid()
+
+print(hwid)
+print("Script Key:", getgenv().script_key)
